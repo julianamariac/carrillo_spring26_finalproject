@@ -1,0 +1,603 @@
+fips,stname,Ctyname,cases_2018,ststatus,pop_2018,pct_uninsured,incidence_2018
+9001,Connecticut,Fairfield County,289,High Incidenc,943823,8.3,30.620148057421783
+9003,Connecticut,Hartford County,217,High Incidenc,892697,5.3,24.308359947440174
+9005,Connecticut,Litchfield County,130,High Incidenc,181111,5.3,71.77918514060438
+9007,Connecticut,Middlesex County,200,High Incidenc,162682,4.1,122.93923113804847
+9009,Connecticut,New Haven County,333,High Incidenc,857620,6.2,38.82838553205382
+9011,Connecticut,New London County,387,High Incidenc,266784,5.5,145.0611730838431
+9013,Connecticut,Tolland County,138,High Incidenc,150921,4,91.4385671974079
+9015,Connecticut,Windham County,149,High Incidenc,117027,5.4,127.32104557068027
+9110,Connecticut,Capitol,NA,High Incidenc,NA,NA,NA
+9120,Connecticut,Greater Bridgeport,NA,High Incidenc,NA,NA,NA
+9130,Connecticut,Lower Connecticut River Valley,NA,High Incidenc,NA,NA,NA
+9140,Connecticut,Naugatuck Valley,NA,High Incidenc,NA,NA,NA
+9150,Connecticut,Northeastern Connecticut,NA,High Incidenc,NA,NA,NA
+9160,Connecticut,Northwest Hills,NA,High Incidenc,NA,NA,NA
+9170,Connecticut,South Central Connecticut,NA,High Incidenc,NA,NA,NA
+9180,Connecticut,Southeastern Connecticut,NA,High Incidenc,NA,NA,NA
+9190,Connecticut,Western Connecticut,NA,High Incidenc,NA,NA,NA
+10001,Delaware,Kent County,75,High Incidenc,178550,7,42.00504060487258
+10003,Delaware,New Castle County,285,High Incidenc,559335,5.9,50.953364262919365
+10005,Delaware,Sussex County,127,High Incidenc,229286,9.1,55.3893390787052
+11001,District of Columbia,District of Columbia,79,High Incidenc,702455,3.6,11.246272003188816
+23001,Maine,Androscoggin County,68,High Incidenc,107679,9.8,63.150660760222515
+23003,Maine,Aroostook County,4,High Incidenc,67111,13.8,5.960274768666835
+23005,Maine,Cumberland County,284,High Incidenc,293557,8.4,96.74441420235253
+23007,Maine,Franklin County,13,High Incidenc,29897,11,43.482623674616185
+23009,Maine,Hancock County,174,High Incidenc,54811,12.1,317.4545255514404
+23011,Maine,Kennebec County,181,High Incidenc,122083,9.2,148.25979047041767
+23013,Maine,Knox County,104,High Incidenc,39771,11.7,261.49707072992885
+23015,Maine,Lincoln County,62,High Incidenc,34342,13.4,180.53695183740027
+23017,Maine,Oxford County,47,High Incidenc,57618,11.8,81.57173105626714
+23019,Maine,Penobscot County,77,High Incidenc,151096,11.7,50.96097845078626
+23021,Maine,Piscataquis County,2,High Incidenc,16800,12.4,11.904761904761905
+23023,Maine,Sagadahoc County,47,High Incidenc,35634,8.6,131.8965033395072
+23025,Maine,Somerset County,45,High Incidenc,50592,11.7,88.94686907020872
+23027,Maine,Waldo County,78,High Incidenc,39694,11.4,196.50324986144
+23029,Maine,Washington County,15,High Incidenc,31490,16.3,47.634169577643696
+23031,Maine,York County,201,High Incidenc,206229,8.6,97.46446910958207
+24001,Maryland,Allegany County,85,High Incidenc,70975,5.5,119.76047904191617
+24003,Maryland,Anne Arundel County,90,High Incidenc,576031,5,15.624159116436442
+24005,Maryland,Baltimore County,176,High Incidenc,828431,6.2,21.244979968156674
+24009,Maryland,Calvert County,103,High Incidenc,92003,3.8,111.95287110202928
+24011,Maryland,Caroline County,4,High Incidenc,33304,8.1,12.010569300984866
+24013,Maryland,Carroll County,147,High Incidenc,168429,4.2,87.27713161035213
+24015,Maryland,Cecil County,65,High Incidenc,102826,5.3,63.21358411296754
+24017,Maryland,Charles County,8,High Incidenc,161503,4.7,4.953468356624954
+24019,Maryland,Dorchester County,0,High Incidenc,31998,7.4,0
+24021,Maryland,Frederick County,110,High Incidenc,255648,5.6,43.02791338089874
+24023,Maryland,Garrett County,14,High Incidenc,29163,7.1,48.00603504440558
+24025,Maryland,Harford County,156,High Incidenc,253956,4.7,61.42796389925814
+24027,Maryland,Howard County,107,High Incidenc,323196,4.2,33.10684538174978
+24029,Maryland,Kent County,9,High Incidenc,19383,8.1,46.432440798637984
+24031,Maryland,Montgomery County,135,High Incidenc,1052567,7.8,12.825786862023987
+24033,Maryland,Prince George's County,16,High Incidenc,909308,11.1,1.7595798123408128
+24035,Maryland,Queen Anne's County,30,High Incidenc,50251,5.2,59.700304471552805
+24037,Maryland,St. Mary's County,30,High Incidenc,112664,5.5,26.627849179862245
+24039,Maryland,Somerset County,5,High Incidenc,25675,7.5,19.474196689386563
+24041,Maryland,Talbot County,12,High Incidenc,36968,7.7,32.46050638389959
+24043,Maryland,Washington County,36,High Incidenc,150926,6.2,23.85274902932563
+24045,Maryland,Wicomico County,11,High Incidenc,103195,7.9,10.659431173990988
+24047,Maryland,Worcester County,4,High Incidenc,51823,7,7.718580553036297
+24510,Maryland,Baltimore city,29,High Incidenc,602495,7.4,4.813317952846082
+25001,Massachussetts,Barnstable County,0,High Incidenc,213413,3.7,0
+25003,Massachussetts,Berkshire County,0,High Incidenc,126348,3.5,0
+25005,Massachussetts,Bristol County,1,High Incidenc,564022,3.7,0.17729804865767648
+25007,Massachussetts,Dukes County,0,High Incidenc,17352,3.9,0
+25009,Massachussetts,Essex County,0,High Incidenc,790638,3.8,0
+25011,Massachussetts,Franklin County,0,High Incidenc,70963,3,0
+25013,Massachussetts,Hampden County,0,High Incidenc,470406,3.8,0
+25015,Massachussetts,Hampshire County,1,High Incidenc,161355,2.8,0.6197514796566577
+25017,Massachussetts,Middlesex County,0,High Incidenc,1614714,2.8,0
+25019,Massachussetts,Nantucket County,0,High Incidenc,11327,4.4,0
+25021,Massachussetts,Norfolk County,0,High Incidenc,705388,2.4,0
+25023,Massachussetts,Plymouth County,2,High Incidenc,518132,2.8,0.3860020226505987
+25025,Massachussetts,Suffolk County,11,High Incidenc,807252,4.4,1.362647599510438
+25027,Massachussetts,Worcester County,1,High Incidenc,830839,3.1,0.12036026233722778
+27001,Minnesota,Aitkin County,18,High Incidenc,15902,7.2,113.19330901773363
+27003,Minnesota,Anoka County,94,High Incidenc,353813,4.4,26.567706669907547
+27005,Minnesota,Becker County,34,High Incidenc,34371,6.7,98.9206016700125
+27007,Minnesota,Beltrami County,35,High Incidenc,46847,8.5,74.71129421307661
+27009,Minnesota,Benton County,7,High Incidenc,40545,4.5,17.26476754223702
+27011,Minnesota,Big Stone County,0,High Incidenc,4989,5.9,0
+27013,Minnesota,Blue Earth County,5,High Incidenc,67427,4.5,7.415427054444066
+27015,Minnesota,Brown County,0,High Incidenc,25111,4.2,0
+27017,Minnesota,Carlton County,33,High Incidenc,35837,5,92.08360074783045
+27019,Minnesota,Carver County,12,High Incidenc,103551,3,11.588492626821566
+27021,Minnesota,Cass County,53,High Incidenc,29519,9.5,179.54537755344015
+27023,Minnesota,Chippewa County,0,High Incidenc,11924,6.3,0
+27025,Minnesota,Chisago County,25,High Incidenc,55922,3.9,44.70512499552949
+27027,Minnesota,Clay County,8,High Incidenc,63955,4.5,12.508795246657806
+27029,Minnesota,Clearwater County,8,High Incidenc,8810,8.1,90.80590238365494
+27031,Minnesota,Cook County,1,High Incidenc,5393,8.2,18.542555164101614
+27033,Minnesota,Cottonwood County,1,High Incidenc,11277,6.7,8.86760663296976
+27035,Minnesota,Crow Wing County,84,High Incidenc,64889,5.6,129.45183313042273
+27037,Minnesota,Dakota County,73,High Incidenc,425423,4,17.159391946368675
+27039,Minnesota,Dodge County,1,High Incidenc,20822,4.1,4.802612621265968
+27041,Minnesota,Douglas County,2,High Incidenc,37964,4,5.268148772521336
+27043,Minnesota,Faribault County,0,High Incidenc,13758,5.8,0
+27045,Minnesota,Fillmore County,10,High Incidenc,21058,7.3,47.48789058790008
+27047,Minnesota,Freeborn County,0,High Incidenc,30444,7,0
+27049,Minnesota,Goodhue County,19,High Incidenc,46403,4.9,40.945628515397715
+27051,Minnesota,Grant County,0,High Incidenc,6021,5.9,0
+27053,Minnesota,Hennepin County,187,High Incidenc,1259428,5.6,14.848010366610875
+27055,Minnesota,Houston County,11,High Incidenc,18578,4.9,59.20981806437722
+27057,Minnesota,Hubbard County,41,High Incidenc,21332,6.9,192.19951246952934
+27059,Minnesota,Isanti County,14,High Incidenc,39966,4.6,35.02977530901266
+27061,Minnesota,Itasca County,62,High Incidenc,45108,5.5,137.4479028110313
+27063,Minnesota,Jackson County,0,High Incidenc,9911,4.5,0
+27065,Minnesota,Kanabec County,13,High Incidenc,16207,5.6,80.2122539643364
+27067,Minnesota,Kandiyohi County,9,High Incidenc,42855,7.8,21.001050052502624
+27069,Minnesota,Kittson County,0,High Incidenc,4248,5.2,0
+27071,Minnesota,Koochiching County,4,High Incidenc,12440,6.8,32.154340836012864
+27073,Minnesota,Lac qui Parle County,0,High Incidenc,6658,5.5,0
+27075,Minnesota,Lake County,14,High Incidenc,10658,4.8,131.35672734096454
+27077,Minnesota,Lake of the Woods County,1,High Incidenc,3758,5.8,26.609898882384247
+27079,Minnesota,Le Sueur County,1,High Incidenc,28494,5.7,3.5095107741980764
+27081,Minnesota,Lincoln County,0,High Incidenc,5673,6.3,0
+27083,Minnesota,Lyon County,0,High Incidenc,25629,5.1,0
+27085,Minnesota,McLeod County,6,High Incidenc,35873,4.9,16.725671117553592
+27087,Minnesota,Mahnomen County,3,High Incidenc,5519,9,54.35767349157456
+27089,Minnesota,Marshall County,6,High Incidenc,9390,6.5,63.89776357827476
+27091,Minnesota,Martin County,0,High Incidenc,19785,4.9,0
+27093,Minnesota,Meeker County,5,High Incidenc,23141,5.4,21.60667214035694
+27095,Minnesota,Mille Lacs County,14,High Incidenc,26139,7.2,53.55981483606871
+27097,Minnesota,Morrison County,11,High Incidenc,33169,6.6,33.16349603545479
+27099,Minnesota,Mower County,2,High Incidenc,40011,6.5,4.998625378021044
+27101,Minnesota,Murray County,0,High Incidenc,8276,6.6,0
+27103,Minnesota,Nicollet County,3,High Incidenc,34220,4.2,8.766803039158386
+27105,Minnesota,Nobles County,0,High Incidenc,21924,10.9,0
+27107,Minnesota,Norman County,3,High Incidenc,6475,6.1,46.33204633204633
+27109,Minnesota,Olmsted County,26,High Incidenc,156277,4,16.637125104781894
+27111,Minnesota,Otter Tail County,28,High Incidenc,58812,5.4,47.609331428960076
+27113,Minnesota,Pennington County,2,High Incidenc,14178,4.3,14.10636196924813
+27115,Minnesota,Pine County,45,High Incidenc,29483,6.9,152.63032934233289
+27117,Minnesota,Pipestone County,0,High Incidenc,9047,8.6,0
+27119,Minnesota,Polk County,7,High Incidenc,31529,5.3,22.201782485965303
+27121,Minnesota,Pope County,0,High Incidenc,11097,5.2,0
+27123,Minnesota,Ramsey County,109,High Incidenc,550210,6.2,19.810617764126427
+27125,Minnesota,Red Lake County,4,High Incidenc,3999,5.6,100.0250062515629
+27127,Minnesota,Redwood County,0,High Incidenc,15249,7.3,0
+27129,Minnesota,Renville County,3,High Incidenc,14612,6.7,20.53107035313441
+27131,Minnesota,Rice County,10,High Incidenc,66523,6,15.032394810817312
+27133,Minnesota,Rock County,0,High Incidenc,9414,4.9,0
+27135,Minnesota,Roseau County,7,High Incidenc,15150,5.5,46.2046204620462
+27137,Minnesota,St. Louis County,82,High Incidenc,199754,5.2,41.05049210528951
+27139,Minnesota,Scott County,22,High Incidenc,147381,3.8,14.927297277125273
+27141,Minnesota,Sherburne County,42,High Incidenc,96036,3.6,43.73359990003748
+27143,Minnesota,Sibley County,2,High Incidenc,15028,6.4,13.308490817141337
+27145,Minnesota,Stearns County,36,High Incidenc,159256,5.3,22.60511377907269
+27147,Minnesota,Steele County,4,High Incidenc,36803,4.8,10.868679183762193
+27149,Minnesota,Stevens County,2,High Incidenc,9753,5,20.506510817184456
+27151,Minnesota,Swift County,1,High Incidenc,9345,6.9,10.700909577314071
+27153,Minnesota,Todd County,12,High Incidenc,24582,8.2,48.816206980717595
+27155,Minnesota,Traverse County,0,High Incidenc,3308,7.5,0
+27157,Minnesota,Wabasha County,5,High Incidenc,21645,5.5,23.100023100023098
+27159,Minnesota,Wadena County,11,High Incidenc,13773,6.3,79.8664052857039
+27161,Minnesota,Waseca County,2,High Incidenc,18691,5,10.700337060617409
+27163,Minnesota,Washington County,90,High Incidenc,259201,3.2,34.722088263548365
+27165,Minnesota,Watonwan County,1,High Incidenc,10980,9.2,9.107468123861567
+27167,Minnesota,Wilkin County,0,High Incidenc,6254,4.3,0
+27169,Minnesota,Winona County,27,High Incidenc,50825,5.1,53.123462862764384
+27171,Minnesota,Wright County,28,High Incidenc,136349,4,20.535537481022963
+27173,Minnesota,Yellow Medicine County,0,High Incidenc,9795,5.6,0
+33001,New Hampshire,Belknap County,41,High Incidenc,61022,8.3,67.18888269804333
+33003,New Hampshire,Carroll County,73,High Incidenc,48779,9.7,149.65456446421618
+33005,New Hampshire,Cheshire County,38,High Incidenc,76493,7.6,49.677748290693266
+33007,New Hampshire,Coos County,5,High Incidenc,31589,8.8,15.828294659533382
+33009,New Hampshire,Grafton County,81,High Incidenc,89786,7.6,90.21451005724724
+33011,New Hampshire,Hillsborough County,395,High Incidenc,415247,7.3,95.12410685688278
+33013,New Hampshire,Merrimack County,190,High Incidenc,151132,6.9,125.71791546462696
+33015,New Hampshire,Rockingham County,351,High Incidenc,309176,5.6,113.52757005718425
+33017,New Hampshire,Strafford County,170,High Incidenc,130090,7.2,130.67876085786764
+33019,New Hampshire,Sullivan County,33,High Incidenc,43144,7.5,76.48804005191916
+34001,New Jersey,Atlantic County,75,High Incidenc,265429,9.6,28.25614382753957
+34003,New Jersey,Bergen County,232,High Incidenc,936692,8.7,24.768013391808623
+34005,New Jersey,Burlington County,186,High Incidenc,445384,5.4,41.761715732940566
+34007,New Jersey,Camden County,157,High Incidenc,507078,8.1,30.961706088609645
+34009,New Jersey,Cape May County,31,High Incidenc,92560,8,33.491789109766636
+34011,New Jersey,Cumberland County,81,High Incidenc,150972,10.7,53.652332882918685
+34013,New Jersey,Essex County,167,High Incidenc,799767,11.6,20.881081615020374
+34015,New Jersey,Gloucester County,109,High Incidenc,291408,5.2,37.4046011090979
+34017,New Jersey,Hudson County,26,High Incidenc,676061,12.9,3.8458068132905163
+34019,New Jersey,Hunterdon County,335,High Incidenc,124714,4.1,268.6145901823372
+34021,New Jersey,Mercer County,165,High Incidenc,369811,9.2,44.61738563752836
+34023,New Jersey,Middlesex County,154,High Incidenc,829685,7.7,18.561261201540344
+34025,New Jersey,Monmouth County,506,High Incidenc,621354,6.7,81.43505956346947
+34027,New Jersey,Morris County,472,High Incidenc,494228,5.2,95.50248063646738
+34029,New Jersey,Ocean County,290,High Incidenc,601651,7.7,48.20070107088661
+34031,New Jersey,Passaic County,149,High Incidenc,503310,13.5,29.604021378474496
+34033,New Jersey,Salem County,58,High Incidenc,62607,7.1,92.6413979267494
+34035,New Jersey,Somerset County,225,High Incidenc,331164,5.4,67.94216762691597
+34037,New Jersey,Sussex County,246,High Incidenc,140799,5.7,174.71714997975837
+34039,New Jersey,Union County,92,High Incidenc,558067,11.2,16.485475758287087
+34041,New Jersey,Warren County,244,High Incidenc,105779,7,230.66960360752137
+36001,New York,Albany County,116,High Incidenc,307117,4.2,37.77062161977357
+36003,New York,Allegany County,5,High Incidenc,46430,5.7,10.768899418479432
+36005,New York,Bronx County,34,High Incidenc,1432132,8.7,2.374082835939704
+36007,New York,Broome County,56,High Incidenc,191659,5.2,29.218560046749694
+36009,New York,Cattaraugus County,17,High Incidenc,76840,6.5,22.123893805309734
+36011,New York,Cayuga County,7,High Incidenc,77145,4.8,9.073822023462311
+36013,New York,Chautauqua County,9,High Incidenc,127939,5.5,7.03460242771946
+36015,New York,Chemung County,21,High Incidenc,84254,4.1,24.924632658390102
+36017,New York,Chenango County,83,High Incidenc,47536,4.9,174.60451026590374
+36019,New York,Clinton County,42,High Incidenc,80695,5,52.04783443831712
+36021,New York,Columbia County,129,High Incidenc,59916,5.8,215.3014219907871
+36023,New York,Cortland County,22,High Incidenc,47823,4.4,46.00296928256279
+36025,New York,Delaware County,38,High Incidenc,44527,5.8,85.34147820423564
+36027,New York,Dutchess County,292,High Incidenc,293718,5.1,99.41508521779394
+36029,New York,Erie County,66,High Incidenc,919719,4.4,7.17610487551089
+36031,New York,Essex County,17,High Incidenc,37300,4.5,45.57640750670242
+36033,New York,Franklin County,23,High Incidenc,50293,6.8,45.73201041894498
+36035,New York,Fulton County,29,High Incidenc,53591,5.1,54.11356384467541
+36037,New York,Genesee County,6,High Incidenc,57511,4.5,10.432786771226374
+36039,New York,Greene County,69,High Incidenc,47491,5.6,145.29068665641913
+36041,New York,Hamilton County,1,High Incidenc,4434,6.3,22.552999548940008
+36043,New York,Herkimer County,31,High Incidenc,61833,4.9,50.13504115925153
+36045,New York,Jefferson County,14,High Incidenc,111755,4.8,12.52740369558409
+36047,New York,Kings County,281,High Incidenc,2582830,7.8,10.879539110200826
+36049,New York,Lewis County,14,High Incidenc,26447,5.1,52.936060800846974
+36051,New York,Livingston County,13,High Incidenc,63227,4.5,20.56083635155867
+36053,New York,Madison County,57,High Incidenc,70795,4.8,80.51416060456248
+36055,New York,Monroe County,45,High Incidenc,742474,4.3,6.060818291280234
+36057,New York,Montgomery County,49,High Incidenc,49455,5.3,99.07997169143665
+36059,New York,Nassau County,31,High Incidenc,1358343,4.6,2.282192347588201
+36061,New York,New York County,264,High Incidenc,1628701,6.1,16.209236686168914
+36063,New York,Niagara County,2,High Incidenc,210433,4.4,0.9504212742298024
+36065,New York,Oneida County,24,High Incidenc,229577,5,10.454008894619234
+36067,New York,Onondaga County,71,High Incidenc,461809,4.7,15.374321418595134
+36069,New York,Ontario County,34,High Incidenc,109864,4.3,30.947353091094442
+36071,New York,Orange County,145,High Incidenc,381951,5.4,37.962984780770306
+36073,New York,Orleans County,5,High Incidenc,40612,5.3,12.31163202994189
+36075,New York,Oswego County,34,High Incidenc,117898,5.3,28.838487506149384
+36077,New York,Otsego County,45,High Incidenc,59749,5.5,75.31506803461146
+36079,New York,Putnam County,168,High Incidenc,98892,4.2,169.88229583788373
+36081,New York,Queens County,85,High Incidenc,2278906,10.1,3.7298598538070458
+36083,New York,Rensselaer County,107,High Incidenc,159442,4.2,67.10904278671869
+36085,New York,Richmond County,88,High Incidenc,476179,5.3,18.480445378733627
+36087,New York,Rockland County,48,High Incidenc,325695,5.3,14.737714733109199
+36089,New York,St. Lawrence County,33,High Incidenc,108047,5.5,30.54226401473433
+36091,New York,Saratoga County,77,High Incidenc,230163,4.1,33.45455177417743
+36093,New York,Schenectady County,19,High Incidenc,155350,4.8,12.230447376890892
+36095,New York,Schoharie County,73,High Incidenc,31097,5.2,234.74933273306104
+36097,New York,Schuyler County,24,High Incidenc,17912,5.1,133.98838767306833
+36099,New York,Seneca County,12,High Incidenc,34300,5.6,34.98542274052478
+36101,New York,Steuben County,74,High Incidenc,95796,5.2,77.24748423733767
+36103,New York,Suffolk County,193,High Incidenc,1481093,4.9,13.030917032218772
+36105,New York,Sullivan County,14,High Incidenc,75498,6.2,18.54353757715436
+36107,New York,Tioga County,19,High Incidenc,48560,4.6,39.12685337726524
+36109,New York,Tompkins County,58,High Incidenc,102793,4.8,56.424075569348105
+36111,New York,Ulster County,116,High Incidenc,178599,6,64.94997172436575
+36113,New York,Warren County,11,High Incidenc,64265,4.9,17.11662646852875
+36115,New York,Washington County,17,High Incidenc,61197,5.4,27.779139500302303
+36117,New York,Wayne County,15,High Incidenc,90064,4.8,16.654823236809378
+36119,New York,Westchester County,113,High Incidenc,967612,5.8,11.678234664307595
+36121,New York,Wyoming County,1,High Incidenc,40085,4.6,2.4946987651241113
+36123,New York,Yates County,32,High Incidenc,24841,8.4,128.81929068878065
+42001,Pennsylvania,Adams County,137,High Incidenc,102811,7.1,133.25422376983008
+42003,Pennsylvania,Allegheny County,404,High Incidenc,1218452,5,33.156825217571146
+42005,Pennsylvania,Armstrong County,216,High Incidenc,65263,6.5,330.96854266582903
+42007,Pennsylvania,Beaver County,254,High Incidenc,164742,5.1,154.18047613844678
+42009,Pennsylvania,Bedford County,133,High Incidenc,48176,7.4,276.0710727333112
+42011,Pennsylvania,Berks County,279,High Incidenc,420152,7.5,66.4045393095832
+42013,Pennsylvania,Blair County,118,High Incidenc,122492,6.3,96.332821735297
+42015,Pennsylvania,Bradford County,161,High Incidenc,60833,6.7,264.6589844327914
+42017,Pennsylvania,Bucks County,398,High Incidenc,628195,5.2,63.35612349668495
+42019,Pennsylvania,Butler County,624,High Incidenc,187888,4.6,332.11274802009706
+42021,Pennsylvania,Cambria County,137,High Incidenc,131730,5.4,104.00060730281636
+42023,Pennsylvania,Cameron County,15,High Incidenc,4492,5.9,333.92698130008904
+42025,Pennsylvania,Carbon County,55,High Incidenc,64227,6.2,85.63376773008235
+42027,Pennsylvania,Centre County,195,High Incidenc,162805,6.8,119.77519117963207
+42029,Pennsylvania,Chester County,678,High Incidenc,522046,5.9,129.87361267014785
+42031,Pennsylvania,Clarion County,187,High Incidenc,38779,8,482.21975811650634
+42033,Pennsylvania,Clearfield County,221,High Incidenc,79388,6.4,278.37960397037335
+42035,Pennsylvania,Clinton County,20,High Incidenc,38684,7.4,51.700961637886465
+42037,Pennsylvania,Columbia County,41,High Incidenc,65456,6.2,62.63749694451234
+42039,Pennsylvania,Crawford County,126,High Incidenc,85063,8.2,148.12550697718163
+42041,Pennsylvania,Cumberland County,177,High Incidenc,251423,6,70.39928725693353
+42043,Pennsylvania,Dauphin County,189,High Incidenc,277097,6.8,68.20716211290632
+42045,Pennsylvania,Delaware County,156,High Incidenc,564751,6.1,27.62279305392996
+42047,Pennsylvania,Elk County,67,High Incidenc,30169,5.1,222.08226987967782
+42049,Pennsylvania,Erie County,111,High Incidenc,272061,6,40.79967360261118
+42051,Pennsylvania,Fayette County,103,High Incidenc,130441,6.2,78.96290276830138
+42053,Pennsylvania,Forest County,16,High Incidenc,7279,7.1,219.81041351834043
+42055,Pennsylvania,Franklin County,48,High Incidenc,154835,8.9,31.00074272612781
+42057,Pennsylvania,Fulton County,25,High Incidenc,14523,7,172.14074227088065
+42059,Pennsylvania,Greene County,31,High Incidenc,36506,6.5,84.91754780036159
+42061,Pennsylvania,Huntingdon County,67,High Incidenc,45168,6.6,148.3351044987602
+42063,Pennsylvania,Indiana County,201,High Incidenc,84501,8.1,237.8670074910356
+42065,Pennsylvania,Jefferson County,212,High Incidenc,43641,7,485.78171902568687
+42067,Pennsylvania,Juniata County,18,High Incidenc,24704,8.5,72.86269430051813
+42069,Pennsylvania,Lackawanna County,125,High Incidenc,210793,6.6,59.299881874635304
+42071,Pennsylvania,Lancaster County,309,High Incidenc,543557,12.1,56.84776389596676
+42073,Pennsylvania,Lawrence County,112,High Incidenc,86184,6.1,129.9545159194282
+42075,Pennsylvania,Lebanon County,92,High Incidenc,141314,8.3,65.10324525524717
+42077,Pennsylvania,Lehigh County,209,High Incidenc,368100,7.7,56.77804944308612
+42079,Pennsylvania,Luzerne County,181,High Incidenc,317646,6.5,56.98167142038622
+42081,Pennsylvania,Lycoming County,88,High Incidenc,113664,6.7,77.42117117117117
+42083,Pennsylvania,McKean County,83,High Incidenc,40968,6.3,202.59714899433703
+42085,Pennsylvania,Mercer County,75,High Incidenc,110683,6.9,67.76108345455039
+42087,Pennsylvania,Mifflin County,59,High Incidenc,46222,8.8,127.64484444636754
+42089,Pennsylvania,Monroe County,105,High Incidenc,169507,7.6,61.94434448134886
+42091,Pennsylvania,Montgomery County,463,High Incidenc,828604,4.6,55.877113796216285
+42093,Pennsylvania,Montour County,10,High Incidenc,18240,5,54.82456140350877
+42095,Pennsylvania,Northampton County,88,High Incidenc,304807,6,28.87072803446115
+42097,Pennsylvania,Northumberland County,60,High Incidenc,91083,6.9,65.87398307038636
+42099,Pennsylvania,Perry County,110,High Incidenc,46139,8.5,238.41002189037474
+42101,Pennsylvania,Philadelphia County,190,High Incidenc,1584138,8.7,11.993904571445166
+42103,Pennsylvania,Pike County,59,High Incidenc,55933,7,105.48334614628216
+42105,Pennsylvania,Potter County,49,High Incidenc,16622,7.2,294.7900372999639
+42107,Pennsylvania,Schuylkill County,140,High Incidenc,142067,6.5,98.54505268640852
+42109,Pennsylvania,Snyder County,35,High Incidenc,40540,9.2,86.3344844597928
+42111,Pennsylvania,Somerset County,58,High Incidenc,73952,8.1,78.42925140631762
+42113,Pennsylvania,Sullivan County,12,High Incidenc,6071,8.5,197.66101136550816
+42115,Pennsylvania,Susquehanna County,74,High Incidenc,40589,7.6,182.31540565177758
+42117,Pennsylvania,Tioga County,61,High Incidenc,40763,7,149.64551186124672
+42119,Pennsylvania,Union County,48,High Incidenc,44785,7.8,107.1787428826616
+42121,Pennsylvania,Venango County,153,High Incidenc,51266,7,298.44341278820275
+42123,Pennsylvania,Warren County,53,High Incidenc,39498,5.9,134.18400931692744
+42125,Pennsylvania,Washington County,207,High Incidenc,207346,4.7,99.83312916574229
+42127,Pennsylvania,Wayne County,86,High Incidenc,51276,7.5,167.71979093533037
+42129,Pennsylvania,Westmoreland County,496,High Incidenc,350611,4.8,141.4673241854933
+42131,Pennsylvania,Wyoming County,50,High Incidenc,27046,6,184.87022110478443
+42133,Pennsylvania,York County,448,High Incidenc,448273,6.5,99.93909961117444
+44001,Rhode Island,Bristol County,86,High Incidenc,48649,3,176.77650105860346
+44003,Rhode Island,Kent County,161,High Incidenc,163861,3.4,98.25400797016984
+44005,Rhode Island,Newport County,143,High Incidenc,82542,3.6,173.24513580964842
+44007,Rhode Island,Providence County,441,High Incidenc,636084,5.7,69.3304657875375
+44009,Rhode Island,Washington County,280,High Incidenc,126179,3.2,221.90697342663992
+50001,Vermont,Addison County,31,High Incidenc,36973,4.7,83.84496794958483
+50003,Vermont,Bennington County,79,High Incidenc,35631,5.5,221.71704414695068
+50005,Vermont,Caledonia County,10,High Incidenc,30302,5.2,33.0011220381493
+50007,Vermont,Chittenden County,95,High Incidenc,164572,4.3,57.72549400870136
+50009,Vermont,Essex County,1,High Incidenc,6250,6,16
+50011,Vermont,Franklin County,22,High Incidenc,49421,4.6,44.51548936686834
+50013,Vermont,Grand Isle County,11,High Incidenc,7090,4.8,155.14809590973204
+50015,Vermont,Lamoille County,6,High Incidenc,25300,5.4,23.715415019762844
+50017,Vermont,Orange County,16,High Incidenc,28999,5.1,55.17431635573641
+50019,Vermont,Orleans County,1,High Incidenc,26907,5.7,3.7165049986992233
+50021,Vermont,Rutland County,110,High Incidenc,58672,5,187.48295609490046
+50023,Vermont,Washington County,36,High Incidenc,58140,4.4,61.91950464396285
+50025,Vermont,Windham County,78,High Incidenc,42756,5.1,182.43053606511367
+50027,Vermont,Windsor County,79,High Incidenc,55286,5.4,142.89331838078357
+51001,Virginia,Accomack County,1,High Incidenc,32412,17,3.085277057879798
+51003,Virginia,Albemarle County,22,High Incidenc,108718,9.7,20.23583951139646
+51005,Virginia,Alleghany County,5,High Incidenc,14910,10.4,33.5345405767941
+51007,Virginia,Amelia County,2,High Incidenc,13013,13.6,15.369246138476907
+51009,Virginia,Amherst County,2,High Incidenc,31666,12.1,6.315922440472431
+51011,Virginia,Appomattox County,0,High Incidenc,15841,11.8,0
+51013,Virginia,Arlington County,10,High Incidenc,237521,6.7,4.210154049536673
+51015,Virginia,Augusta County,39,High Incidenc,75457,10.4,51.68506566653856
+51017,Virginia,Bath County,2,High Incidenc,4292,12.6,46.59832246039142
+51019,Virginia,Bedford County,5,High Incidenc,78747,10.3,6.349448232948557
+51021,Virginia,Bland County,1,High Incidenc,6293,9.2,15.890672175433021
+51023,Virginia,Botetourt County,3,High Incidenc,33277,8.1,9.015235748414822
+51025,Virginia,Brunswick County,0,High Incidenc,16384,12.7,0
+51027,Virginia,Buchanan County,0,High Incidenc,21221,12.9,0
+51029,Virginia,Buckingham County,1,High Incidenc,16999,14,5.882698982293076
+51031,Virginia,Campbell County,2,High Incidenc,54973,11.7,3.638149637094574
+51033,Virginia,Caroline County,4,High Incidenc,30772,11.3,12.998830105290525
+51035,Virginia,Carroll County,44,High Incidenc,29636,13.1,148.46807936293698
+51036,Virginia,Charles City County,1,High Incidenc,6941,15.2,14.407145944388418
+51037,Virginia,Charlotte County,1,High Incidenc,11938,14.8,8.376612497905848
+51041,Virginia,Chesterfield County,6,High Incidenc,348556,9.8,1.7213876679787465
+51043,Virginia,Clarke County,11,High Incidenc,14523,10.6,75.7419265991875
+51045,Virginia,Craig County,1,High Incidenc,5064,8.9,19.747235387045812
+51047,Virginia,Culpeper County,23,High Incidenc,51859,12.5,44.35102875103646
+51049,Virginia,Cumberland County,0,High Incidenc,9809,12.4,0
+51051,Virginia,Dickenson County,0,High Incidenc,14523,11.6,0
+51053,Virginia,Dinwiddie County,0,High Incidenc,28529,11.2,0
+51057,Virginia,Essex County,0,High Incidenc,10919,12,0
+51059,Virginia,Fairfax County,118,High Incidenc,1150795,8.8,10.253781081773903
+51061,Virginia,Fauquier County,38,High Incidenc,70675,10.1,53.767244428723025
+51063,Virginia,Floyd County,34,High Incidenc,15795,13.7,215.2579930357708
+51065,Virginia,Fluvanna County,1,High Incidenc,26783,10.7,3.7337116827838552
+51067,Virginia,Franklin County,3,High Incidenc,56195,11.8,5.33855325206869
+51069,Virginia,Frederick County,38,High Incidenc,88355,10.5,43.00831871427763
+51071,Virginia,Giles County,16,High Incidenc,16844,9.9,94.9893137022085
+51073,Virginia,Gloucester County,0,High Incidenc,37349,10.3,0
+51075,Virginia,Goochland County,0,High Incidenc,23244,7.5,0
+51077,Virginia,Grayson County,23,High Incidenc,15631,12.9,147.14349689719148
+51079,Virginia,Greene County,9,High Incidenc,19779,12.5,45.50280600637039
+51081,Virginia,Greensville County,0,High Incidenc,11627,10.7,0
+51083,Virginia,Halifax County,0,High Incidenc,34120,11.3,0
+51085,Virginia,Hanover County,0,High Incidenc,107239,7.3,0
+51087,Virginia,Henrico County,7,High Incidenc,329261,10,2.125973012291161
+51089,Virginia,Henry County,4,High Incidenc,50953,14.1,7.850371911369301
+51091,Virginia,Highland County,0,High Incidenc,2210,17.2,0
+51093,Virginia,Isle of Wight County,0,High Incidenc,36953,9,0
+51095,Virginia,James City County,1,High Incidenc,76397,7.9,1.3089519221958978
+51097,Virginia,King and Queen County,0,High Incidenc,7042,14.2,0
+51099,Virginia,King George County,2,High Incidenc,26575,7.4,7.525870178739416
+51101,Virginia,King William County,0,High Incidenc,16939,9.7,0
+51103,Virginia,Lancaster County,0,High Incidenc,10783,13,0
+51105,Virginia,Lee County,0,High Incidenc,23541,12.3,0
+51107,Virginia,Loudoun County,136,High Incidenc,406850,6.9,33.42755315226742
+51109,Virginia,Louisa County,7,High Incidenc,36778,12.9,19.03311762466692
+51111,Virginia,Lunenburg County,1,High Incidenc,12086,15.6,8.274036074797285
+51113,Virginia,Madison County,4,High Incidenc,13295,12.3,30.086498683715682
+51115,Virginia,Mathews County,0,High Incidenc,8802,9.6,0
+51117,Virginia,Mecklenburg County,3,High Incidenc,30650,11.5,9.787928221859707
+51119,Virginia,Middlesex County,0,High Incidenc,10769,11.1,0
+51121,Virginia,Montgomery County,53,High Incidenc,98985,10.4,53.54346618174471
+51125,Virginia,Nelson County,8,High Incidenc,14836,13.1,53.92289026691831
+51127,Virginia,New Kent County,1,High Incidenc,22391,9,4.466080121477379
+51131,Virginia,Northampton County,1,High Incidenc,11735,14.6,8.521516829995738
+51133,Virginia,Northumberland County,0,High Incidenc,12147,12.5,0
+51135,Virginia,Nottoway County,0,High Incidenc,15420,14.4,0
+51137,Virginia,Orange County,5,High Incidenc,36644,11.2,13.644798602772623
+51139,Virginia,Page County,10,High Incidenc,23933,12.7,41.783311745288934
+51141,Virginia,Patrick County,3,High Incidenc,17673,13.4,16.975046681378373
+51143,Virginia,Pittsylvania County,0,High Incidenc,60949,12.4,0
+51145,Virginia,Powhatan County,1,High Incidenc,29189,9.6,3.4259481311452946
+51147,Virginia,Prince Edward County,2,High Incidenc,22950,12.7,8.714596949891067
+51149,Virginia,Prince George County,2,High Incidenc,38082,8.7,5.251825009190694
+51153,Virginia,Prince William County,39,High Incidenc,468011,11.7,8.333137468991113
+51155,Virginia,Pulaski County,22,High Incidenc,34066,9.6,64.58052016673516
+51157,Virginia,Rappahannock County,4,High Incidenc,7252,13.3,55.15719801434088
+51159,Virginia,Richmond County,0,High Incidenc,9038,12.7,0
+51161,Virginia,Roanoke County,23,High Incidenc,94073,8.3,24.449098040883143
+51163,Virginia,Rockbridge County,14,High Incidenc,22752,11.5,61.533052039381154
+51165,Virginia,Rockingham County,27,High Incidenc,81244,12.3,33.233223376495495
+51167,Virginia,Russell County,0,High Incidenc,26748,10.7,0
+51169,Virginia,Scott County,0,High Incidenc,21534,10.7,0
+51171,Virginia,Shenandoah County,12,High Incidenc,43497,12,27.588109524794817
+51173,Virginia,Smyth County,5,High Incidenc,30472,11.3,16.40850616959832
+51175,Virginia,Southampton County,0,High Incidenc,17586,10.6,0
+51177,Virginia,Spotsylvania County,4,High Incidenc,134238,10.2,2.979782177922794
+51179,Virginia,Stafford County,12,High Incidenc,149960,7.8,8.002133902373966
+51181,Virginia,Surry County,1,High Incidenc,6474,10.1,15.446400988569664
+51183,Virginia,Sussex County,0,High Incidenc,11237,13.4,0
+51185,Virginia,Tazewell County,3,High Incidenc,40855,11.6,7.343042467262269
+51187,Virginia,Warren County,23,High Incidenc,40003,11.9,57.49568782341324
+51191,Virginia,Washington County,0,High Incidenc,54402,11.5,0
+51193,Virginia,Westmoreland County,0,High Incidenc,17830,12.5,0
+51195,Virginia,Wise County,0,High Incidenc,38012,11.9,0
+51197,Virginia,Wythe County,29,High Incidenc,28754,11.5,100.85553314321486
+51199,Virginia,York County,0,High Incidenc,67846,7.4,0
+51510,Virginia,Alexandria city,16,High Incidenc,160530,11.4,9.966984364293278
+51515,Virginia,Bedford city,0,High Incidenc,NA,NA,NA
+51520,Virginia,Bristol city,0,High Incidenc,16482,10.4,0
+51530,Virginia,Buena Vista city,1,High Incidenc,6237,9.8,16.0333493666827
+51540,Virginia,Charlottesville city,14,High Incidenc,48117,10.4,29.09574578631253
+51550,Virginia,Chesapeake city,6,High Incidenc,242634,8,2.4728603575756076
+51570,Virginia,Colonial Heights city,0,High Incidenc,17833,10,0
+51580,Virginia,Covington city,1,High Incidenc,5460,10.5,18.315018315018314
+51590,Virginia,Danville city,0,High Incidenc,40693,11.2,0
+51595,Virginia,Emporia city,1,High Incidenc,5121,10.1,19.527436047646944
+51600,Virginia,Fairfax city,0,High Incidenc,24574,9.4,0
+51610,Virginia,Falls Church city,1,High Incidenc,14772,4,6.769564040075819
+51620,Virginia,Franklin city,0,High Incidenc,8013,8.9,0
+51630,Virginia,Fredericksburg city,1,High Incidenc,29144,11.5,3.4312379906670323
+51640,Virginia,Galax city,28,High Incidenc,6423,15.1,435.9333644714308
+51650,Virginia,Hampton city,0,High Incidenc,134313,9.1,0
+51660,Virginia,Harrisonburg city,6,High Incidenc,54033,14.6,11.104325134639943
+51670,Virginia,Hopewell city,1,High Incidenc,22596,11.8,4.4255620463798895
+51678,Virginia,Lexington city,1,High Incidenc,7136,8.5,14.013452914798206
+51680,Virginia,Lynchburg city,5,High Incidenc,82126,10.7,6.088205927477292
+51683,Virginia,Manassas city,4,High Incidenc,41641,15.9,9.605917245022935
+51685,Virginia,Manassas Park city,2,High Incidenc,17307,16.1,11.556017796267406
+51690,Virginia,Martinsville city,0,High Incidenc,12902,10.4,0
+51700,Virginia,Newport News city,2,High Incidenc,178626,10.8,1.1196578325663678
+51710,Virginia,Norfolk city,3,High Incidenc,244076,12.6,1.2291253543978105
+51720,Virginia,Norton city,0,High Incidenc,3968,9.5,0
+51730,Virginia,Petersburg city,0,High Incidenc,31567,11.8,0
+51735,Virginia,Poquoson city,0,High Incidenc,12190,5.8,0
+51740,Virginia,Portsmouth city,0,High Incidenc,94632,10.3,0
+51750,Virginia,Radford city,11,High Incidenc,18339,8.5,59.98146027591471
+51760,Virginia,Richmond city,3,High Incidenc,228783,13.3,1.3112862406734767
+51770,Virginia,Roanoke city,17,High Incidenc,99920,13,17.013610888710968
+51775,Virginia,Salem city,3,High Incidenc,25643,7.7,11.69909916936396
+51790,Virginia,Staunton city,19,High Incidenc,24922,9.8,76.23786212984511
+51800,Virginia,Suffolk city,0,High Incidenc,91185,8.7,0
+51810,Virginia,Virginia Beach city,8,High Incidenc,450189,9.4,1.7770314245794545
+51820,Virginia,Waynesboro city,8,High Incidenc,22628,12.2,35.3544281421248
+51830,Virginia,Williamsburg city,0,High Incidenc,14896,10.1,0
+51840,Virginia,Winchester city,8,High Incidenc,28108,14.2,28.461647929415115
+54001,West Virginia,Barbour County,23,High Incidenc,16535,8.4,139.09888116117327
+54003,West Virginia,Berkeley County,46,High Incidenc,117123,7.6,39.27495026595972
+54005,West Virginia,Boone County,1,High Incidenc,21951,7.6,4.555601111566671
+54007,West Virginia,Braxton County,4,High Incidenc,14089,8.8,28.390943289090778
+54009,West Virginia,Brooke County,16,High Incidenc,22203,5.8,72.0623339188398
+54011,West Virginia,Cabell County,1,High Incidenc,93224,7.7,1.0726851454561057
+54013,West Virginia,Calhoun County,1,High Incidenc,7254,8.8,13.785497656465399
+54015,West Virginia,Clay County,1,High Incidenc,8632,8.2,11.584800741427248
+54017,West Virginia,Doddridge County,0,High Incidenc,8406,7.6,0
+54019,West Virginia,Fayette County,5,High Incidenc,43018,8.3,11.6230415175043
+54021,West Virginia,Gilmer County,0,High Incidenc,8026,7.6,0
+54023,West Virginia,Grant County,6,High Incidenc,11626,8.4,51.60846378806124
+54025,West Virginia,Greenbrier County,23,High Incidenc,34786,9.4,66.1185534410395
+54027,West Virginia,Hampshire County,28,High Incidenc,23347,10.3,119.92975542896305
+54029,West Virginia,Hancock County,78,High Incidenc,29094,7.7,268.0965147453083
+54031,West Virginia,Hardy County,8,High Incidenc,13775,9.4,58.076225045372055
+54033,West Virginia,Harrison County,16,High Incidenc,67554,8.2,23.684755898984516
+54035,West Virginia,Jackson County,0,High Incidenc,28706,7.1,0
+54037,West Virginia,Jefferson County,19,High Incidenc,56811,6.4,33.44422735033709
+54039,West Virginia,Kanawha County,9,High Incidenc,180454,8.1,4.987420616888515
+54041,West Virginia,Lewis County,7,High Incidenc,16024,7.3,43.6844732900649
+54043,West Virginia,Lincoln County,0,High Incidenc,20599,8.2,0
+54045,West Virginia,Logan County,0,High Incidenc,32607,8.2,0
+54047,West Virginia,McDowell County,0,High Incidenc,18223,11,0
+54049,West Virginia,Marion County,13,High Incidenc,56097,7.2,23.17414478492611
+54051,West Virginia,Marshall County,16,High Incidenc,30785,6.9,51.9733636511288
+54053,West Virginia,Mason County,1,High Incidenc,26718,7.1,3.742795119395164
+54055,West Virginia,Mercer County,11,High Incidenc,59131,8.9,18.60276335593851
+54057,West Virginia,Mineral County,17,High Incidenc,26940,6.6,63.103192279138824
+54059,West Virginia,Mingo County,0,High Incidenc,23785,9.2,0
+54061,West Virginia,Monongalia County,30,High Incidenc,106420,7.4,28.190189813944745
+54063,West Virginia,Monroe County,17,High Incidenc,13280,10.1,128.0120481927711
+54065,West Virginia,Morgan County,19,High Incidenc,17787,8.5,106.81958733906787
+54067,West Virginia,Nicholas County,4,High Incidenc,24842,7.8,16.101763143064165
+54069,West Virginia,Ohio County,18,High Incidenc,41755,6,43.10860974733565
+54071,West Virginia,Pendleton County,2,High Incidenc,6997,9.6,28.583678719451193
+54073,West Virginia,Pleasants County,3,High Incidenc,7507,5.8,39.962701478619955
+54075,West Virginia,Pocahontas County,10,High Incidenc,8414,8.2,118.84953648680771
+54077,West Virginia,Preston County,6,High Incidenc,33839,8.2,17.731020420225185
+54079,West Virginia,Putnam County,0,High Incidenc,56682,5.7,0
+54081,West Virginia,Raleigh County,2,High Incidenc,74254,7.4,2.6934575915102217
+54083,West Virginia,Randolph County,4,High Incidenc,28823,8.6,13.877805918884224
+54085,West Virginia,Ritchie County,0,High Incidenc,9721,8.9,0
+54087,West Virginia,Roane County,1,High Incidenc,13932,9.2,7.17772035601493
+54089,West Virginia,Summers County,0,High Incidenc,12760,8.1,0
+54091,West Virginia,Taylor County,7,High Incidenc,16862,6.9,41.513462222749375
+54093,West Virginia,Tucker County,4,High Incidenc,6955,7.9,57.51258087706686
+54095,West Virginia,Tyler County,0,High Incidenc,8746,6.5,0
+54097,West Virginia,Upshur County,32,High Incidenc,24415,8.3,131.0669670284661
+54099,West Virginia,Wayne County,2,High Incidenc,39944,8.9,5.007009813739235
+54101,West Virginia,Webster County,4,High Incidenc,8285,7.7,48.28002414001207
+54103,West Virginia,Wetzel County,6,High Incidenc,15270,8,39.29273084479371
+54105,West Virginia,Wirt County,0,High Incidenc,5830,7.6,0
+54107,West Virginia,Wood County,2,High Incidenc,84203,7.4,2.3752122845979358
+54109,West Virginia,Wyoming County,0,High Incidenc,20786,8.6,0
+55001,Wisconsin,Adams County,6,High Incidenc,20348,8.5,29.486927462158445
+55003,Wisconsin,Ashland County,2,High Incidenc,15600,8.2,12.820512820512821
+55005,Wisconsin,Barron County,11,High Incidenc,45164,8,24.35568151625188
+55007,Wisconsin,Bayfield County,4,High Incidenc,15042,9.1,26.592208482914504
+55009,Wisconsin,Brown County,77,High Incidenc,263378,7.1,29.23554738816454
+55011,Wisconsin,Buffalo County,4,High Incidenc,13125,7.8,30.476190476190474
+55013,Wisconsin,Burnett County,6,High Incidenc,15392,8.8,38.981288981288984
+55015,Wisconsin,Calumet County,6,High Incidenc,50159,4.4,11.961960964134054
+55017,Wisconsin,Chippewa County,15,High Incidenc,64135,6.5,23.388165588212363
+55019,Wisconsin,Clark County,8,High Incidenc,34709,17.3,23.048776974271803
+55021,Wisconsin,Columbia County,20,High Incidenc,57358,6.1,34.868719271941146
+55023,Wisconsin,Crawford County,5,High Incidenc,16291,7.2,30.691793014547912
+55025,Wisconsin,Dane County,139,High Incidenc,542364,4.9,25.628544667418932
+55027,Wisconsin,Dodge County,31,High Incidenc,87847,5.8,35.288626817079695
+55029,Wisconsin,Door County,9,High Incidenc,27610,7.1,32.59688518652662
+55031,Wisconsin,Douglas County,10,High Incidenc,43208,6.5,23.143862247731903
+55033,Wisconsin,Dunn County,19,High Incidenc,45131,6,42.09966541844852
+55035,Wisconsin,Eau Claire County,29,High Incidenc,104534,6.1,27.742170011670844
+55037,Wisconsin,Florence County,2,High Incidenc,4321,8,46.28558204119417
+55039,Wisconsin,Fond du Lac County,22,High Incidenc,103066,5.7,21.3455455727398
+55041,Wisconsin,Forest County,1,High Incidenc,8991,10.5,11.122233344455568
+55043,Wisconsin,Grant County,11,High Incidenc,51554,8.5,21.336850680839508
+55045,Wisconsin,Green County,4,High Incidenc,36929,5.4,10.831595764846055
+55047,Wisconsin,Green Lake County,1,High Incidenc,18918,9.7,5.28597103287874
+55049,Wisconsin,Iowa County,5,High Incidenc,23771,5.3,21.03403306549998
+55051,Wisconsin,Iron County,1,High Incidenc,5676,7.9,17.618040873854827
+55053,Wisconsin,Jackson County,5,High Incidenc,20478,9.7,24.4164469186444
+55055,Wisconsin,Jefferson County,13,High Incidenc,85129,6.5,15.270941747230673
+55057,Wisconsin,Juneau County,9,High Incidenc,26617,8,33.812976669046094
+55059,Wisconsin,Kenosha County,54,High Incidenc,169290,6.9,31.89792663476874
+55061,Wisconsin,Kewaunee County,0,High Incidenc,20383,6.3,0
+55063,Wisconsin,La Crosse County,34,High Incidenc,118230,4.7,28.757506555019877
+55065,Wisconsin,Lafayette County,3,High Incidenc,16665,10.8,18.001800180018
+55067,Wisconsin,Langlade County,4,High Incidenc,19268,7.3,20.759809009757113
+55069,Wisconsin,Lincoln County,2,High Incidenc,27689,5.8,7.223084979594785
+55071,Wisconsin,Manitowoc County,16,High Incidenc,79074,6.5,20.234210992235123
+55073,Wisconsin,Marathon County,24,High Incidenc,135428,6.1,17.721593761998996
+55075,Wisconsin,Marinette County,15,High Incidenc,40434,6.6,37.097492209526635
+55077,Wisconsin,Marquette County,11,High Incidenc,15434,8.4,71.27121938577167
+55078,Wisconsin,Menominee County,3,High Incidenc,4658,8.3,64.405324173465
+55079,Wisconsin,Milwaukee County,669,High Incidenc,948201,8.2,70.5546608788643
+55081,Wisconsin,Monroe County,10,High Incidenc,46051,8.5,21.715055047664546
+55083,Wisconsin,Oconto County,11,High Incidenc,37830,6.9,29.07745175786413
+55085,Wisconsin,Oneida County,8,High Incidenc,35470,6.3,22.554271215111363
+55087,Wisconsin,Outagamie County,35,High Incidenc,187365,6.2,18.680116350438983
+55089,Wisconsin,Ozaukee County,10,High Incidenc,89147,4,11.217427395201184
+55091,Wisconsin,Pepin County,2,High Incidenc,7289,8,27.438606118809165
+55093,Wisconsin,Pierce County,7,High Incidenc,42555,5.5,16.44930090471155
+55095,Wisconsin,Polk County,16,High Incidenc,43598,7.4,36.69893114363044
+55097,Wisconsin,Portage County,19,High Incidenc,70942,6,26.782441994869046
+55099,Wisconsin,Price County,5,High Incidenc,13397,7.2,37.32178846010301
+55101,Wisconsin,Racine County,83,High Incidenc,196584,6.5,42.22113702030684
+55103,Wisconsin,Richland County,7,High Incidenc,17377,8.5,40.28313287679116
+55105,Wisconsin,Rock County,46,High Incidenc,163129,7.1,28.198542257967624
+55107,Wisconsin,Rusk County,5,High Incidenc,14147,8.7,35.3431823001343
+55109,Wisconsin,St. Croix County,17,High Incidenc,89694,4.4,18.953330211608357
+55111,Wisconsin,Sauk County,32,High Incidenc,64249,7.2,49.8062226649442
+55113,Wisconsin,Sawyer County,4,High Incidenc,16489,10.5,24.258596640184365
+55115,Wisconsin,Shawano County,9,High Incidenc,40796,7.8,22.060986371212866
+55117,Wisconsin,Sheboygan County,22,High Incidenc,115456,5.9,19.054878048780488
+55119,Wisconsin,Taylor County,6,High Incidenc,20412,7.5,29.394473838918284
+55121,Wisconsin,Trempealeau County,10,High Incidenc,29442,8.4,33.96508389375722
+55123,Wisconsin,Vernon County,8,High Incidenc,30785,10.4,25.9866818255644
+55125,Wisconsin,Vilas County,7,High Incidenc,21938,9.6,31.908104658583284
+55127,Wisconsin,Walworth County,12,High Incidenc,103718,8.2,11.569833587226903
+55129,Wisconsin,Washburn County,6,High Incidenc,15878,7.5,37.78813452575891
+55131,Wisconsin,Washington County,16,High Incidenc,135693,4.3,11.791323060143117
+55133,Wisconsin,Waukesha County,64,High Incidenc,403072,3.8,15.878056525881233
+55135,Wisconsin,Waupaca County,12,High Incidenc,51128,6.7,23.470505398216243
+55137,Wisconsin,Waushara County,7,High Incidenc,24263,8.8,28.850513126983472
+55139,Wisconsin,Winnebago County,46,High Incidenc,171020,5.5,26.897438896035553
+55141,Wisconsin,Wood County,15,High Incidenc,73055,6.1,20.532475532133322

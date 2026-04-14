@@ -1,0 +1,925 @@
+---
+title: "Forest Canopy Cover and Lyme Disease Incidence in Endemic U.S. Counties"
+author: "Juliana Carrillo"
+date: "April 14, 2026"
+format:
+  pdf:
+    mainfont: "Latin Modern Roman"
+    include-in-header:
+      text: |
+        \usepackage{titling}
+        \setlength{\droptitle}{-3em}
+        \pretitle{\begin{center}\large\bfseries}
+        \posttitle{\end{center}\vspace{-1em}}
+        \preauthor{\begin{center}\small}
+        \postauthor{\end{center}\vspace{-1.5em}}
+        \predate{\begin{center}\small}
+        \postdate{\end{center}\vspace{-1em}}
+---
+
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(GGally)
+library(sandwich)
+library(stargazer)
+library(janitor)
+library(dplyr)
+library(here)
+library(car)
+library(lmtest)
+library(gridExtra)
+library(moments)
+library(psych)
+library(sf)
+library(tigris)
+library(nhdplusTools)
+library(stringr)
+library(readr)
+library(stringr)
+library(patchwork)
+library(here)
+
+options(tigris_use_cache = TRUE)
+```
+
+```{r set plotting theme}
+theme_set(theme_minimal())
+
+blue   <- '#2166AC'
+orange <- '#D4760A'
+```
+
+## Data Loading and Cleaning
+
+```{r, lyme data loading and cleaning}
+
+lyme_raw    <- read.csv(here("data", "external", "lyme_prevalence", 
+                              "LD_Case_Counts_by_County_2023_updated.csv"))
+
+dim(lyme_raw)       
+names(lyme_raw)      # Note to self, I found inconsistent capitalization Cases2018 vs cases2021 
+
+```
+
+```{r, inspecting response}
+
+# checking the endemic status categories 
+
+# checking if I have enough high incidence cases
+table(lyme_raw$ststatus)
+
+# checking FIPS formatting
+range(lyme_raw$stcode)
+range(lyme_raw$ctycode)
+
+# reducing to only the columns of interest
+lyme_r <- lyme_raw[, c("stname", "Ctyname", "stcode", "ctycode", "ststatus", "Cases2018")]
+
+
+```
+
+```{r}
+
+# looking @ complete cases and missing cases (recommended by Dr. Labovitz)
+lyme_c <- lyme_r[complete.cases(lyme_r), ]
+dim(lyme_c)    
+
+lyme_incomplete <- lyme_r[!complete.cases(lyme_r), ]
+lyme_incomplete  #note to me: there are systemic incomplete cases in Connecticut
+
+# looking @ distribution of lyme prevalence 
+describe(lyme_r$Cases2018)     
+hist(lyme_r$Cases2018, 
+     breaks = 50,
+     main = "Raw Lyme Cases 2018 (all counties)",
+     xlab = "Case count")
+
+```
+
+```{r}
+# how many counties had zero cases in 2018?
+sum(lyme_r$Cases2018 == 0, na.rm = TRUE) 
+sum(lyme_r$Cases2018 > 0, na.rm = TRUE) 
+
+# do ststatus breakdown against zero/nonzero cases
+table(lyme_r$ststatus, lyme_r$Cases2018 > 0)
+```
+
+```{r, population data loading and cleaning }
+
+pop_raw     <- read.csv(here("data", "external", "population", 
+                              "co-est2018-alldata.csv"))
+# inspecting POPESTIMATE2018 is present
+dim(pop_raw)     
+
+
+# filtering to county-level rows only (dropping state totals)
+pop_r <- pop_raw[pop_raw$SUMLEV == 50,
+                 c("STATE", "COUNTY", "STNAME", "CTYNAME", "POPESTIMATE2018")]
+
+dim(pop_r)    
+
+# checking FIPS components
+range(pop_r$STATE)
+range(pop_r$COUNTY)
+
+# missing values
+pop_c <- pop_r[complete.cases(pop_r), ]
+dim(pop_c)
+
+# distribution check
+describe(pop_r$POPESTIMATE2018)
+hist(log(pop_r$POPESTIMATE2018),
+     main = "Log County Population (2018 estimate)",
+     xlab = "log(population)")
+```
+
+```{r, SAHIE uninsured}
+
+sahie_raw   <- read.csv(here("data", "external", "insured", 
+                              "sahie_2018.csv"), skip = 79)
+
+dim(sahie_raw)   # has multiple rows per county?
+names(sahie_raw) # checking PCTUI, statefips, countyfips, agecat, racecat, sexcat, iprcat are present
+
+# checking how many unique counties before filtering
+length(unique(paste0(sahie_raw$statefips, sahie_raw$countyfips)))
+
+# inspecting the category filter values
+table(sahie_raw$agecat)
+table(sahie_raw$sexcat)
+table(sahie_raw$iprcat)
+
+sahie_r <- sahie_raw[sahie_raw$agecat == 0 & 
+                     sahie_raw$racecat == 0 & 
+                     sahie_raw$sexcat == 0 & 
+                     sahie_raw$iprcat == 0 &
+                     sahie_raw$geocat == 50,
+                     c("statefips", "countyfips", "PCTUI", "pctui_moe", "county_name", "state_name")]
+
+sahie_r$PCTUI <- as.numeric(sahie_r$PCTUI)
+
+# checking how many NA in conversion
+sum(is.na(sahie_r$PCTUI))
+
+# dropping state rows
+sahie_r <- sahie_r[sahie_r$countyfips != 0, ]
+
+# checking what version values exist in the duplicated counties
+table(sahie_r$version[duplicated(paste0(sahie_r$statefips, 
+                                         sahie_r$countyfips)) |
+                      duplicated(paste0(sahie_r$statefips, 
+                                         sahie_r$countyfips), 
+                                 fromLast = TRUE)])
+
+# removing any remaining duplicate counties
+sahie_r <- sahie_r[!duplicated(paste0(sahie_r$statefips, 
+                                       sahie_r$countyfips)), ]
+
+dim(sahie_r)
+nrow(sahie_r) == length(unique(paste0(sahie_r$statefips, 
+                                       sahie_r$countyfips)))  # should now be true?
+
+dim(sahie_r)   # checking one row per county and same number of counties
+
+nrow(sahie_r) == length(unique(paste0(sahie_r$statefips, sahie_r$countyfips)))  
+
+#fixing duplicate counties ugh
+dupes <- sahie_r[duplicated(paste0(sahie_r$statefips, sahie_r$countyfips)) | 
+                 duplicated(paste0(sahie_r$statefips, sahie_r$countyfips), 
+                            fromLast = TRUE), ]
+dupes
+
+# looking for missing values
+sahie_c <- sahie_r[complete.cases(sahie_r), ]
+dim(sahie_c)
+
+sahie_incomplete <- sahie_r[!complete.cases(sahie_r), ]
+sahie_incomplete
+
+# looking @ distribution of prevalence
+hist(sahie_r$PCTUI,
+     breaks = 40,
+     main = "Percent Uninsured by County (2018)",
+     xlab = "% Uninsured (PCTUI)")
+```
+
+```{r, peromyscus leucopus occurrence records}
+
+mouse_raw   <- read.delim(here("data", "external", "mice", 
+                                "Mouse_0044277-260226173443078.csv"), 
+                           sep = "\t", header = TRUE)
+
+dim(mouse_raw)    # expect ~48,781 rows
+names(mouse_raw)  # many columns — you only need a few
+
+```
+```{r}
+
+# reducing to columns of interest
+mouse_r <- mouse_raw[, c("gbifID", "stateProvince", "decimalLatitude", 
+                          "decimalLongitude", "year", "occurrenceStatus",
+                          "coordinateUncertaintyInMeters")]
+
+# checking geographic scope within US
+table(mouse_r$stateProvince) |> sort(decreasing = TRUE) |> head(20)
+
+# checking coordinate quality
+sum(is.na(mouse_r$decimalLatitude))    # records with no latidude
+sum(is.na(mouse_r$decimalLongitude))   # records with no longitude
+
+# flagging implausible coordinates (outside contiguous US bounding box)
+bad_coords <- mouse_r[!is.na(mouse_r$decimalLatitude) & 
+                       (mouse_r$decimalLatitude < 24 | mouse_r$decimalLatitude > 50 |
+                        mouse_r$decimalLongitude < -125 | mouse_r$decimalLongitude > -66), ]
+dim(bad_coords)   # how many records have weird coordinates?
+
+# checking year range
+describe(mouse_r$year)
+hist(mouse_r$year,
+     breaks = 50,
+     main = "Peromyscus leucopus Records by Year",
+     xlab = "Year of record")
+
+# do records have no year at all
+sum(is.na(mouse_r$year))
+
+# missing values overall?
+mouse_c <- mouse_r[complete.cases(mouse_r), ]
+dim(mouse_c)
+
+mouse_incomplete <- mouse_r[!complete.cases(mouse_r), ]
+sapply(mouse_r, function(x) sum(is.na(x)))   # NA count per column
+```
+
+```{r, FIPS join}
+#lyme set
+lyme_r <- read_csv(here("data", "external","lyme_prevalence", "LD_Case_Counts_by_County_2023_updated.csv"))
+# cleaned
+lyme_clean <- lyme_r %>%
+  mutate(fips = stcode * 1000 + ctycode) %>%  
+  select(fips, stname, Ctyname, cases_2018 = Cases2018, ststatus)
+
+unique(lyme_clean$ststatus)
+
+# population cleaned set
+pop_clean <- pop_r %>%
+  rename_all(tolower) %>%
+  mutate(fips = as.integer(state) * 1000 + as.integer(county)) %>%
+  select(fips, pop_2018 = popestimate2018)
+
+# SAHIE set
+sahie_r <- read_csv(
+  here("data", "external", "insured", "sahie_2018.csv"),
+  skip = 79,
+  col_types = cols(.default = col_character())
+)
+
+# verifying the header landed correctly before filtering
+names(sahie_r)[1:6] 
+
+#troubleshooting issues with header
+raw_lines <- readLines(here("data", "external", "insured", "sahie_2018.csv"), n = 90)
+grep("^year,", raw_lines) 
+
+names(sahie_r)         
+nrow(sahie_r)
+head(sahie_r, 3)
+
+```
+
+```{r}
+
+sahie_clean <- sahie_r %>%
+  rename_all(tolower) %>%
+  filter(
+    year      == "2018",
+    agecat    == "0",    # all ages
+    racecat   == "0",    # all races
+    sexcat    == "0",    # both sexes
+    iprcat    == "0"     # all income levels
+  ) %>%
+  mutate(
+    fips    = as.integer(statefips) * 1000 + as.integer(countyfips),
+    pct_uninsured = as.numeric(pctui)
+  ) %>%
+# dropping state-level summary rows
+  filter(countyfips != "000") %>%             
+  select(fips, pct_uninsured)
+
+# joining lyme, population, and sahie
+analysis_df <- lyme_clean %>%
+  left_join(pop_clean,   by = "fips") %>%
+  left_join(sahie_clean, by = "fips")
+
+# how many counties lost population after join? (hopefully none)
+analysis_df %>%
+  summarise(
+    n_total        = n(),
+    n_missing_pop  = sum(is.na(pop_2018)),
+    n_missing_pctui = sum(is.na(pct_uninsured))
+  )
+
+#restricting counties to high incidence counties only
+analysis_df <- analysis_df %>%
+  filter(grepl("High Incid", ststatus)) %>%
+  mutate(
+    incidence_2018 = (cases_2018 / pop_2018) * 100000
+  )
+
+# inspecting  post join
+nrow(analysis_df)       
+sum(is.na(analysis_df$incidence_2018))   
+summary(analysis_df$incidence_2018)     
+
+hist(analysis_df$incidence_2018,
+     main = "Lyme Incidence Rate 2018 (endemic counties)",
+     xlab = "Cases per 100,000")
+
+# saving/exporting new set
+write_csv(analysis_df, here("data", "interim", "lyme_incidence_joined.csv"))
+
+```
+
+```{r}
+#building weather variable based on multiple sets of NOAA data, one per month, for 2018
+state_fips_lookup <- c(
+  AL="01", AK="02", AZ="04", AR="05", CA="06", CO="08", CT="09",
+  DE="10", DC="11", FL="12", GA="13", HI="15", ID="16", IL="17",
+  IN="18", IA="19", KS="20", KY="21", LA="22", ME="23", MD="24",
+  MA="25", MI="26", MN="27", MS="28", MO="29", MT="30", NE="31",
+  NV="32", NH="33", NJ="34", NM="35", NY="36", NC="37", ND="38",
+  OH="39", OK="40", OR="41", PA="42", RI="44", SC="45", SD="46",
+  TN="47", TX="48", UT="49", VT="50", VA="51", WA="53", WV="54",
+  WI="55", WY="56"
+)
+# reading all 12 monthly NOAA weather files
+months <- c("jan", "feb", "mar", "apr", "may", "jun",
+            "jul", "aug", "sep", "oct", "nov", "dec")
+
+read_weather_month <- function(month_label) {
+  
+  filepath <- here("data", "external", "weather",
+                   paste0("county_weather_", month_label, ".csv"))
+  
+  # skip to header
+  df <- read_csv(filepath, skip = 3, show_col_types = FALSE)
+  
+  # renaming by position to avoid depending on exact header text
+  df <- df |>
+    rename(
+      county_id   = 1,   
+      county_name = 2,
+      state_name  = 3,
+      avg_temp_f  = 4    
+    ) |>
+    mutate(
+      state_abbr  = str_extract(county_id, "^[A-Z]+"),
+      county3     = str_pad(str_extract(county_id, "[0-9]+$"), 3, pad = "0"),
+      state_fips2 = state_fips_lookup[state_abbr],
+      fips        = as.integer(paste0(state_fips2, county3)),
+      month       = month_label
+    ) |>
+    select(fips, month, avg_temp_f)
+  
+  return(df)
+}
+
+weather_long <- bind_rows(lapply(months, read_weather_month))
+
+cat("Weather rows (long format):", nrow(weather_long), "\n")
+cat("Unique counties:           ", n_distinct(weather_long$fips), "\n")
+cat("Missing temperature values:", sum(is.na(weather_long$avg_temp_f)), "\n")
+```
+
+
+```{r}
+# computing active-season months
+
+# active_months_10c: months where avg temp >= 10C (50F) lower bound for I. scapularis questing. The cited upper bound of 60C is never practically reached in U.S. weather (whoops), so >= 10C is the filter my source is Fieser et al. (2021)
+
+weather_county <- weather_long |>
+  mutate(avg_temp_c = (avg_temp_f - 32) * (5 / 9)) |>
+  group_by(fips) |>
+  summarise(
+    active_months_10c  = sum(avg_temp_c >= 10, na.rm = TRUE),
+    mean_annual_temp_c = round(mean(avg_temp_c, na.rm = TRUE), 2),
+    .groups = "drop"
+  )
+
+cat("\n Weather variable summary (county level) \n")
+print(summary(weather_county[, c("active_months_10c", "mean_annual_temp_c")]))
+
+cat("\nLowest active months (expect northern / high-elevation counties):\n")
+print(weather_county |> arrange(active_months_10c) |> head(6))
+
+cat("\nHighest active months (expect Gulf Coast counties):\n")
+print(weather_county |> arrange(desc(active_months_10c)) |> head(6))
+
+# joining to interim Lyme dataset
+lyme_interim <- read_csv(
+  here("data", "interim", "lyme_incidence_joined.csv"),
+  show_col_types = FALSE
+)
+
+cat("\nLyme interim rows before join:", nrow(lyme_interim), "\n")
+
+lyme_full <- lyme_interim |>
+  left_join(weather_county, by = "fips")
+
+cat("Rows after join: ", nrow(lyme_full), "\n")
+
+no_weather <- lyme_full |> filter(is.na(active_months_10c))
+cat("Counties with no weather match:", nrow(no_weather), "\n")
+if (nrow(no_weather) > 0) {
+  print(no_weather |> select(fips, stname, Ctyname, cases_2018))
+}
+
+# Connecticut FIPS (09110-09190) are a 2022 reorganization artifact; cases_2018 = NA were dropped and one county in DC (11001) has no NOAA county record was deleted. I need to make a note in my final report of all these missing values
+```
+
+
+```{r, final checks and saving}
+# collinearity check
+
+cat("\n Correlations among continuous predictors \n")
+cor_check <- lyme_full |>
+  select(incidence_2018, active_months_10c, mean_annual_temp_c, pct_uninsured) |>
+  filter(complete.cases(pick(everything())))
+
+print(round(cor(cor_check), 3))
+
+# writing to processed folder 
+write_csv(lyme_full, here("data", "processed", "lyme_analysis_full.csv"))
+
+cat("\nWrote data/processed/lyme_analysis_full.csv\n")
+cat("Rows:", nrow(lyme_full), "| Columns:", ncol(lyme_full), "\n")
+cat("Columns:", paste(names(lyme_full), collapse = ", "), "\n")
+```
+
+```{r, transforming and joining canopy data}
+
+counties_sf <- tigris::counties(cb = TRUE, year = 2018, class = "sf") |>
+   # removing alaska, hawaii, and territories
+  filter(!STATEFP %in% c("02", "15", "60", "66", "69", "72", "78"))  
+
+counties_sf <- st_transform(counties_sf, 5070)
+
+counties_sf$fips          <- as.integer(paste0(counties_sf$STATEFP, 
+                                                counties_sf$COUNTYFP))
+counties_sf$county_area_m2 <- as.numeric(st_area(counties_sf))
+
+dim(counties_sf)         
+range(counties_sf$fips)  
+```
+
+
+```{r}
+# downloading WBD HUC-12 boundaries directly from USGS regional files
+options(timeout = 600)
+
+wbd_dir <- here("data", "external", "natural_land", "WBD")
+dir.create(wbd_dir, showWarnings = FALSE)
+
+huc2_regions <- sprintf("%02d", 1:18)
+
+huc12_list <- lapply(huc2_regions, function(h2) {
+  gpkg_path <- file.path(wbd_dir, paste0("WBD_", h2, ".gpkg"))
+  
+  # only download if not already in my folder
+  if (!file.exists(gpkg_path)) {
+    message("Downloading WBD region ", h2, " of 18...")
+    url <- paste0(
+      "https://prd-tnm.s3.amazonaws.com/StagedProducts/Hydrography/",
+      "WBD/HU2/GPKG/WBD_", h2, "_HU2_GPKG.zip"
+    )
+    zip_path <- file.path(wbd_dir, paste0("WBD_", h2, ".zip"))
+    download.file(url, zip_path, mode = "wb", quiet = TRUE)
+    
+    # extracting just the .gpkg file — skip everything else in the zip
+    zip_contents <- unzip(zip_path, list = TRUE)
+    gpkg_name    <- zip_contents$Name[grepl("\\.gpkg$", zip_contents$Name)][1]
+    unzip(zip_path, files = gpkg_name, exdir = wbd_dir)
+    file.rename(file.path(wbd_dir, gpkg_name), gpkg_path)
+    file.remove(zip_path)
+    message("  Region ", h2, " saved.")
+  } else {
+    message("Region ", h2, " already cached, skipping download.")
+  }
+  
+  sf::st_read(gpkg_path, layer = "WBDHU12", quiet = TRUE)
+})
+
+huc12_sf <- dplyr::bind_rows(huc12_list) |>
+  st_transform(5070) |>
+  rename(HUC_12 = huc12)
+
+message("Total HUC-12 polygons loaded: ", nrow(huc12_sf))
+```
+
+```{r}
+# setting active geometry column for huc12_sf 
+st_geometry(huc12_sf) <- "shape"
+
+huc12_geo  <- huc12_sf[, c("HUC_12")]
+county_geo <- counties_sf[, c("fips", "county_area_m2")]
+
+intersection <- st_intersection(huc12_geo, county_geo)
+intersection$intersect_area_m2 <- as.numeric(st_area(intersection))
+```
+
+```{r}
+# computing area weights and aggregate to county
+crosswalk <- st_drop_geometry(intersection) |>
+  mutate(weight = intersect_area_m2 / county_area_m2)
+
+# loading PCanopy and join
+pcanopy_raw <- read.csv(here("data", "external", "natural_land",
+                              "CONUS_metrics_CSV", "PCanopy_CONUS.csv"))
+# str_pad zero-pads to 12 characters from the left
+pcanopy_raw$HUC_12 <- stringr::str_pad(
+  sprintf("%.0f", as.numeric(pcanopy_raw$HUC_12)),
+  width = 12, side = "left", pad = "0"
+)
+
+# verificaion
+head(pcanopy_raw$HUC_12)
+sum(crosswalk$HUC_12 %in% pcanopy_raw$HUC_12) 
+
+crosswalk_lc <- crosswalk |>
+  left_join(pcanopy_raw[, c("HUC_12", "pCanopy")], by = "HUC_12")
+
+# aggregating to county
+canopy_county <- crosswalk_lc |>
+  group_by(fips) |>
+  summarise(
+    canopy_pct  = sum(pCanopy * weight, na.rm = TRUE),
+    coverage_wt = sum(weight[!is.na(pCanopy)]),
+    n_hucs      = n()
+  ) |>
+  ungroup()
+
+# summary inspection
+summary(canopy_county$canopy_pct)
+sum(canopy_county$coverage_wt < 0.90)   # counties with poor coverage
+```
+
+
+```{r}
+# joining to existing lyme data
+lyme_joined <- read.csv(here("data", "processed", "lyme_analysis_full.csv"))
+
+lyme_full <- lyme_joined |>
+  left_join(canopy_county |> select(fips, canopy_pct, coverage_wt), 
+            by = "fips")
+
+message("Rows: ", nrow(lyme_full))
+message("Missing canopy: ", sum(is.na(lyme_full$canopy_pct)))
+
+#validating myself
+cor(lyme_full$canopy_pct, lyme_full$incidence_2018, use = "complete.obs")
+
+# saving
+write.csv(lyme_full,
+          here("data", "processed", "lyme_canopy_joined.csv"),
+          row.names = FALSE)
+
+message("Saved: data/processed/lyme_canopy_joined.csv")
+message("Columns: ", paste(names(lyme_full), collapse = ", "))
+```
+
+```{r, mouse spatial join to county}
+mouse_sf <- mouse_r |>
+  filter(
+    !is.na(decimalLatitude),
+    !is.na(decimalLongitude),
+    decimalLatitude  >= 24, decimalLatitude  <= 50,
+    decimalLongitude >= -125, decimalLongitude <= -66
+  ) |>
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+           crs = 4326) |>
+  st_transform(5070)
+
+# assigning each mouse record to a county
+mouse_county_join <- st_join(mouse_sf, counties_sf[, c("fips", "county_area_m2")])
+
+# counting occurrences per county, then computing density
+mouse_density <- mouse_county_join |>
+  st_drop_geometry() |>
+  filter(!is.na(fips)) |>
+  group_by(fips) |>
+  summarise(
+    mouse_records  = n(),
+    county_area_m2 = first(county_area_m2)
+  ) |>
+  mutate(
+    mouse_density_km2 = mouse_records / (county_area_m2 / 1e6)
+  ) |>
+  select(fips, mouse_records, mouse_density_km2)
+
+# I am assigning counties with zero mouse records get density = 0
+mouse_density_full <- counties_sf |>
+  st_drop_geometry() |>
+  select(fips) |>
+  left_join(mouse_density, by = "fips") |>
+  mutate(
+    mouse_records     = replace_na(mouse_records, 0),
+    mouse_density_km2 = replace_na(mouse_density_km2, 0)
+  )
+
+summary(mouse_density_full$mouse_density_km2)
+```
+
+
+```{r, mouse spatial join 2}
+# joining to lyme canopy dataset
+lyme_joined <- read.csv(here("data", "processed", "lyme_canopy_joined.csv"))
+
+lyme_full2 <- lyme_joined |>
+  left_join(mouse_density_full |> select(fips, mouse_density_km2), 
+            by = "fips")
+
+message("Missing mouse density: ", sum(is.na(lyme_full2$mouse_density_km2)))
+cor(lyme_full2$mouse_density_km2, lyme_full2$incidence_2018, 
+    use = "complete.obs")
+
+write.csv(lyme_full2,
+          here("data", "processed", "lyme_modeling_ready.csv"),
+          row.names = FALSE)
+
+message("Final dataset saved: data/processed/lyme_modeling_ready.csv")
+message("Columns: ", paste(names(lyme_full2), collapse = ", "))
+```
+```{r}
+#| label: load-data
+
+#loading the processed data
+d <- read.csv(here("data", "processed", "lyme_modeling_ready.csv"))
+
+# Excluding CT county (NA cases) and DC (no NOAA record).  See variable definitions for assumptions....
+d <- d[complete.cases(d), ]
+
+# Excluding counties with zero 2018 cases even if they were categorized to high incidence historically
+d <- d[d$incidence_2018 > 0, ]
+
+# Log-transform prevalence
+d$log_incidence <- log(d$incidence_2018)
+```
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+theme_set(
+  theme_minimal() +
+  theme(
+    plot.title  = element_text(size = 11, face = "bold"),
+    axis.title  = element_text(size = 8),
+    axis.text   = element_text(size = 9),
+    strip.text  = element_text(size = 10)
+  )
+)
+
+blue   <- '#2166AC'
+orange <- '#D4760A'
+```
+
+```{r}
+
+#loading the processed data
+d <- read.csv(here("data", "processed", "lyme_modeling_ready.csv"))
+
+# Excluding CT county (NA cases) and DC (no NOAA record).  See variable definitions for assumptions....
+d <- d[complete.cases(d), ]
+
+# Excluding counties with zero 2018 cases even if they were categorized to high incidence historically
+d <- d[d$incidence_2018 > 0, ]
+
+# Log-transform prevalence
+d$log_incidence <- log(d$incidence_2018)
+```
+## Introduction
+\indent Lyme disease transmission follows a predictable ecological cycle where deer ticks (Ixodes scapularis) get Borrelia burgdorferi from reservoir hosts like the white-footed mouse (Peromyscus leucopus) and transmit it to humans (Rogovskyy et. al, 2024).  Both I. scapularis and P. leucopus live in habitats that have fragmented forest (Anderson et. al, 2003).  County-level canopy cover may be a measurable predictor of transmission risk.  While forest fragmentation broadly predicts Lyme risk, dense canopy specifically has not been well characterized as a predictor.  Temperature has been studied but not relative to vector I. scapularis.  Lastly, equity-based predictors like health insurance coverage remain unexplored.  This study estimates the association between percent dense forest canopy and 2018 Lyme disease incidence across 602 U.S. counties that are identified as "high-incidence" endemic counties by the CDC.
+
+## Data and Operationalization
+indent\ **Lyme incidence (outcome)**: 2018 county case counts (CDC surveillance dataset) were divided by Census 2018 population estimates and multiplied by 100,000 to produce cases per 100,000 residents.   Connecticut planning region FIPS codes (n = 9) and Washington D.C. (n = 1, no NOAA record) were dropped.  Counties with zero 2018 cases (n = 90) are excluded because log(0) is undefined, the analytic sample is n = 500.  **Canopy cover (primary predictor)**: EPA EnviroAtlas percent dense forest canopy (PFOR90, HUC-12 watersheds) was aggregated to county level via area-weighted mean using tigris and sf.  **Tick-questing season (covariate)**: Mean monthly NOAA temperature was used to count months per county exceeding 10°C the recognized metabolic minimum for active I. scapularis questing  (Fieler et. al, 2021).  Mean annual temperature was dropped due to r = 0.90 collinearity with this variable.  **Percent uninsured (covariate)**: SAHIE 2018 (U.S. Census Bureau, 2025) county-level estimates (all-age, all-income row).  Uninsured individuals are less likely to receive laboratory-confirmed diagnoses, so this variable partly adjusts for surveillance undercount.  **Reservoir host density (covariate)**: GBIF P. leucopus occurrences through 2018 were spatially binned to county area (km²) over all time to produce mouse_density_km2.  An audit revealed 97% of records are preserved museum specimens heavily concentrated in New York (median collection year 1957), making this variable unreliable as a contemporary predictor.  It is retained in Model 3 for transparency/honesty.
+
+## Exploratory Data Analysis
+```{r}
+#| label: eda-distributions
+#| fig-cap: "**Left:** Distribution of Lyme incidence (cases per 100,000) among the 602 endemic counties is strongly right-skewed, and. **Right:** After the log transformation, the distribution is somewhat normal with a small left skew (dashed lines mark the median.)"
+#| fig-height: 2.0
+
+p_raw <- ggplot(d, aes(x = incidence_2018)) +
+  geom_histogram(bins = 40, fill = blue, color = "white", linewidth = 0.2) +
+  geom_vline(xintercept = median(d$incidence_2018),
+             linetype = "dashed", color = orange, linewidth = 0.8) +
+  labs(x = "Incidence (cases / 100k)", y = "Counties",
+       title = "Raw incidence") +
+  theme(plot.title = element_text(size = 9))
+
+p_log <- ggplot(d, aes(x = log_incidence)) +
+  geom_histogram(bins = 40, fill = blue, color = "white", linewidth = 0.2) +
+  geom_vline(xintercept = median(d$log_incidence),
+             linetype = "dashed", color = orange, linewidth = 0.8) +
+  labs(x = "Log incidence", y = "Counties",
+       title = "Log-transformed incidence") +
+  theme(plot.title = element_text(size = 9))
+
+p_raw | p_log
+```
+\indent Raw Lyme incidence is strongly right-skewed (skewness ≈ 2.5), driven by high prevalence northeastern counties. A natural log transformation produces an approximately symmetric distribution and substantially improves linearity with canopy cover (the models use log(incidence_2018) as the outcome.)
+
+```{r}
+#| label: bivariate-plot
+#| fig-cap: "The relationship between forest canopy cover and the log Lyme disease incidence across 602 endemic U.S. counties (2018).  Points are sized by county population.  The solid line is the OLS fit from Model 1 (canopy only).  The shaded band is the 95% confidence interval on the mean.  A positive association is evident across the full range of canopy cover."
+#| fig-width: 6.0
+#| fig-height: 2.0
+
+# Fit Model 1 for overlaying the regression line and confidence ribbon
+m1 <- lm(log_incidence ~ canopy_pct, data = d)
+
+# Prediction grid for smooth ribbon
+pred_grid <- data.frame(canopy_pct = seq(min(d$canopy_pct), max(d$canopy_pct), length.out = 200))
+pred_grid <- cbind(pred_grid, predict(m1, newdata = pred_grid, interval = "confidence"))
+
+ggplot(d, aes(x = canopy_pct, y = log_incidence)) +
+  geom_point(aes(size = pop_2018 / 1e5),
+             color = blue, alpha = 0.35, shape = 16) +
+  geom_ribbon(data = pred_grid,
+              aes(x = canopy_pct, ymin = lwr, ymax = upr, y = fit),
+              inherit.aes = FALSE,
+              fill = orange, alpha = 0.30) +
+  geom_line(data = pred_grid,
+            aes(x = canopy_pct, y = fit),
+            inherit.aes = FALSE,
+            color = orange, linewidth = 1.0) +
+  scale_size_continuous(name = "Population\n(100k)", range = c(0.5, 4.0), guide = "none") +
+  labs(x = "Forest canopy cover (%)",
+       y = "Log Lyme incidence (log cases / 100k)",
+       title = "Forest canopy cover and Lyme disease incidence") +
+  theme(plot.title = element_text(size = 10))
+```
+\indent A positive association is evident between forest canopy cover and log Lyme incidence across the full range (5%–80%).  The scatter is substantial, consistent with canopy cover capturing one dimension of transmission risk but not the full ecological or social picture. Two high-canopy data points at log incidence ≈ −2 correspond to low populated mountain counties.
+
+## Regression Models
+\indent Three nested OLS models with HC3 heteroskedasticity-robust standard errors. Model 1 isolates the marginal canopy–incidence association. Model 2 adds active_months_10c and pct_uninsured. Model 3 adds mouse_density_km2 and the biologically motivated interaction canopy_pct:mouse_density_km2, testing whether high reservoir host density amplifies the canopy effect.
+
+```{r}
+#| label: fit-models 
+m1 <- lm(log_incidence ~ canopy_pct,
+         data = d)
+
+m2 <- lm(log_incidence ~ canopy_pct + active_months_10c + pct_uninsured,
+         data = d)
+
+m3 <- lm(log_incidence ~ canopy_pct + active_months_10c + pct_uninsured +
+           mouse_density_km2 + canopy_pct:mouse_density_km2,
+         data = d)
+```
+
+```{r}
+robust_se <- sqrt(diag(vcovHC(m1)))
+robust_se <- sqrt(diag(vcovHC(m2)))
+robust_se <- sqrt(diag(vcovHC(m1)))
+```
+
+
+```{r}
+#| label: regression-table
+#| tbl-cap: "OLS regression results for log Lyme disease incidence across 602 endemic U.S. counties (2018). Heteroskedasticity-robust standard errors (HC3) in parentheses. * p<0.05, ** p<0.01, *** p<0.001."
+#| tbl-pos: h
+#| results: asis
+#| warning: false
+#| message: false
+
+stargazer(m1, m2, m3,
+  header    = FALSE,
+  type      = ifelse(knitr::is_latex_output(), "latex", "html"),
+  se = list(robust_se),
+  star.cutoffs = c(0.05, 0.01, 0.001),
+  dep.var.labels = "Log Lyme Incidence (per 100k)",
+  omit.stat        = c("ser", "f"),
+  single.row       = TRUE,
+  no.space         = TRUE,
+  
+  font.size        = "small",
+ covariate.labels = c(
+    "Canopy cover (\\%)",
+    "Active months (\\textgreater{}10\\textdegree C)",
+    "Percent uninsured",
+    "Mouse density (per km\\textsuperscript{2})",
+    "Canopy \\texttimes{} Mouse density"
+  ),
+  intercept.bottom = TRUE
+)
+```
+```{r}
+# does adding climate + insurance (Model 2) improve over canopy alone (Model 1)?
+# waldtest(m1, m2, vcov = vcovHC(m2))
+
+# does adding mouse density + interaction (Model 3) improve over Model 2?
+#waldtest(m2, m3, vcov = vcovHC(m3))
+```
+
+**Statistical significance (Hlavac & Marek, 2022):** Canopy cover is positive and significant (p \< 0.001) across all three models, rejecting the null of no relationship. In Model 1, each 10-percentage-point increase in canopy is associated with approximately an 11.8% increase in incidence (exp(0.011 \* 10) − 1). A county moving from the 25th percentile of canopy (26.7%) to the 75th (60.6%) is predicted to have 46% higher incidence. Adding climate and surveillance covariates in Model 2 raises the canopy coefficient to 0.017, corresponding to an 18.4% increase per 10 pp the crude Model 1. Active questing months carry a significant negative coefficient (−0.49, p \< 0.001), endemic counties at cooler latitudes have higher prevalence regardless of tick metabolism.  A Wald F-test confirms that active_months_10c and pct_uninsured jointly improve fit over the canopy-only model (F(2, 496) = 31.40, p < 0.001).  Percent uninsured is negative but not statistically significant. The Model 3 interaction is small and non-significant (p = 0.45), consistent with the museum-specimen bias in GBIF records precluding detection of any host-density amplification effect.
+
+## CLM Assumption Evaluation
+\indent At n = 500, we rely on the large-sample OLS framework, which requires IID sampling, no perfect collinearity, and a finite fourth moment.  **IID**: Adjacent counties share tick habitat, climate zones, and healthcare infrastructure, introducing positive spatial autocorrelation in residuals.  Standard errors may be mildly underestimated even after HC3 correction, this is a limitation. Counties are also also not completely identical. **No perfect collinearity**: VIFs for Model 2 are 1.13 (canopy), 1.26 (active months), and 1.32 (percent uninsured) which are below 10. **Linear conditional mean**: The residuals-vs-fitted plot (fig 3) shows a slight deviation so the model slightly overpredicts incidence for the lowest-incidence endemic counties.  A quadratic canopy term was non-significant (p = 0.34), suggesting this curvature reflects omitted county-level heterogeneity rather than a nonlinear functional form. Several extreme negative residuals (≤ −5) correspond to low-count, high-canopy counties. **Homoskedasticity**: Residual spread increases modestly at higher fitted values (Appendix A3); HC3 robust standard errors address this throughout. Normal errors: Not required for large-sample inference.
+
+```{r}
+#| label: residual-plot
+#| include: false
+
+p_resid <- data.frame(
+  fitted    = fitted(m2),
+  residuals = resid(m2)
+) %>%
+  ggplot(aes(x = fitted, y = residuals)) +
+  geom_point(color = blue, alpha = 0.4, size = 0.9) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
+  geom_smooth(method = "loess", se = FALSE,
+              color = orange, linewidth = 0.9) +
+  labs(x = "Fitted values (log incidence)",
+       y = "Residuals",
+       title = "Residuals vs. Fitted (Model 2)") +
+  theme(plot.title = element_text(size = 10))
+
+ggsave("resid_plot.pdf", p_resid, width = 3.0, height = 2.0)
+```
+
+::: {=latex}
+\noindent
+\begin{minipage}[t]{0.52\textwidth}
+\vspace{0pt}
+\includegraphics[width=\linewidth]{resid_plot.pdf}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.44\textwidth}
+\vspace{0pt}
+\small \textit{Figure 3:} Residuals vs. fitted values for 
+Model 2. The loess smoother (orange) reveals a mild S-shaped 
+deviation from zero. Extreme negative residuals correspond to 
+low-count, high-canopy mountain counties. Spread increases 
+modestly at higher fitted values, motivating HC3 robust 
+standard errors.
+\end{minipage}
+:::
+
+## Conclusion
+\indent Forest canopy cover is a statistically and practically significant predictor of Lyme disease incidence across endemic U.S. counties. A 10-percentage-point increase in dense canopy is associated with an estimated 18.4% increase in incidence after adjusting for tick-questing season length and insurance-based surveillance effort (Model 2). Surveillance bias, indexed by percent uninsured, exerts a negative effect on reported incidence, confirming that detection differences partially confound naive geographic comparisons. The canopy × mouse density interaction has no effect in Model 2, but largely consists of donated museum specimens. Future work coupling these predictors with spatial autocorrelation correction would substantially strengthen causal inference.
+
+\newpage
+
+# Appendix
+
+## A1. Data Sources
+
+Allan, B. F., Keesing, F., & Ostfeld, R. S. (2003). Effect of forest fragmentation on Lyme disease risk. Conservation Biology, 17(1), 267–272. https://doi.org/10.1046/j.1523-1739.2003.01260.x
+
+Christine S Anderson, Alan B Cady, and Douglas B Meikle. 2003. Effects of vegetation structure and edge habitat on the density and distribution of white-footed mice (Peromyscus leucopus) in small and large forest patches. Canadian Journal of Zoology. 81(5): 897-904. https://doi.org/10.1139/z03-074
+ 
+CDC Arbonet. (2025, July 10). Tick Surveillance Data Sets. https://www.cdc.gov/ticks/data-research/facts-stats/tick-surveillance-data-sets.html.
+ 
+CDC Lyme Prevalence. (2025, June 4). LD_Case_Counts_by_County_2023_updated. CDC. Retrieved March 15, 2026, from https://www.cdc.gov/lyme/data-research/facts-stats/lyme-disease-case-map.html
+ 
+CDC Lyme Surveillance. (2025, February 11). Lyme Disease Surveillance Data | Lyme Disease. CDC. Retrieved March 17, 2026, from https://www.cdc.gov/lyme/data-research/facts-stats/surveillance-data-1.html
+ 
+Fieler, A. M., Sanogo, Y. O., & Butler, R. A. (2021). Larval thermal characteristics of multiple ixodid ticks: Implications for range expansion. Scientific Reports, 11(1), 18451. https://doi.org/10.1038/s41598-021-97910-z
+ 
+GBIF. (2026, March 17). GBIF Occurrence Download. GBIF. https://doi.org/10.15468/dl.7jgnjr
+
+Hlavac, Marek (2022). stargazer: Well-Formatted Regression and Summary Statistics Tables. R package version 5.2.3.
+ 
+Moon, K. A., Pollak, J., DeWalle, J., Hirsch, A. G., & Schwartz, B. S. (2022). Socioeconomic status and Lyme disease: A retrospective cohort study of 0.5 million people in Pennsylvania. JAMA Network Open, 5(6), e2216853. https://doi.org/10.1001/jamanetworkopen.2022.16853
+ 
+NOAA National Centers for Environmental Information. (2026, March 17). County Mapping [Weather data parameters by county, year, month, and time scale]. County Mapping. Retrieved March 15, 2026, from https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/county/mapping/110/tavg/201812/12/value
+ 
+Parise, C. M., Breuner, N. E., Hojgaard, A., Osikowicz, L. M., Replogle, A. J., Eisen, R. J., & Eisen, L. (2020). Experimental Demonstration of Reservoir Competence of the White-Footed Mouse, Peromyscus leucopus (Rodentia: Cricetidae), for the Lyme Disease Spirochete, Borrelia mayonii (Spirochaetales: Spirochaetaceae). Journal of medical entomology, 57(3), 927–932. https://doi.org/10.1093/jme/tjz242
+
+Rogovskyy, A. S., Pliasas, V. C., Buhrer, R., Lewy, K., Wiener, D. J., Jung, Y., Bova, J., Rogovska, Y., Kim, S. J., & Jeon, E. (2024). Do white-footed mice, the main reservoir of the Lyme disease pathogen in the United States, clinically respond to the borrelial tenancy?. Infection and immunity, 92(12), e0038224. https://doi.org/10.1128/iai.00382-24
+ 
+United States Environmental Protection Agency. (2025, August 14). National data by 12-digit HUC, County, Census Tract, or Census Block Group [Most national-scale datasets in EnviroAtlas are by 12-digit HUC (subwatershed); a few also use counties, census tracts, or census block groups. In this section, these datasets can be downloaded as a collection of tables in a single zip file.]. Data Download. Retrieved March 15, 2026, from https://www.epa.gov/enviroatlas/data-download?token=KVCND-2Eoo_-9lJOL5pkPgCQBLMBzNoCXP1PoZXpO78
+ 
+U.S. Census Bureau Population Data. (2025, March). Annual Resident Population Estimates, Estimated Components of Resident Population Change, and Rates of the Components of Resident Population Change for States and Counties: June 20, 2019. County Population Totals and Components of Change: 2018. Retrieved March 15, 2026, from https://www.census.gov/data/datasets/time-series/demo/popest/2020s-counties-total.html
+ 
+U.S. Census Bureau SAHIE Data. (2025, July). sahie_2018 [The SAHIE program produces model-based estimates of health insurance coverage for demographic groups within counties and states.]. 2008 - 2023 Small Area Health Insurance Estimates (SAHIE) using the American Community Survey (ACS). Retrieved March 15, 2026, from https://www.census.gov/data/datasets/time-series/demo/sahie/estimates-acs.html
+ 
+USDA Unemployment Data. (2025, January 31). Unemployment2000-2023. County-level Data Sets - County-level Data Sets: Download Data. Retrieved March 15, 2026, from https://www.ers.usda.gov/data-products/county-level-data-sets/county-level-data-sets-download-data
+
+
+## A2. Model Specifications Tried
+
+| Specification | Key finding / reason explored |
+|------------------------------------|------------------------------------|
+| `incidence ~ canopy_pct` (raw Y) | Strong right skew produced fan-shaped residuals; log transform clearly superior. |
+| `log(incidence) ~ canopy_pct` (Model 1) | Clean baseline; residuals approximately homoskedastic. Retained as simplest credible model. |
+| `log(incidence) ~ canopy_pct + mean_annual_temp_c` | VIF \> 8 with active months; dropped mean_annual_temp_c to resolve collinearity. |
+| `log(incidence) ~ canopy_pct + active_months_10c + pct_uninsured` (Model 2) | Canopy coefficient stable; season length and surveillance both significant. Best descriptive model. |
+| `log(incidence) ~ ... + mouse_density_km2 + canopy_pct:mouse_density_km2` (Model 3) | Interaction non-significant; likely a GBIF sampling artifact. Retained for transparency. |
+| `log(incidence) ~ canopy_pct + I(canopy_pct^2) + ...` | Quadratic term non-significant (p = 0.34); linear specification retained. |
+
+
+

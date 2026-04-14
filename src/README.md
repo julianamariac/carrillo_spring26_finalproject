@@ -1,5 +1,7 @@
 # Source Folder 
 
+##NOTE TO PROFESSOR: All of the code stored in SRC only runs in the main parent directory.  To run it you must move it up a directory.  I am storing it here for organizational purposes.  
+
 Code that _can_ be removed from the report, should be. And it should be stored here in `/src/`. 
 
 There will, inevitably be work that you have to do to transform, structure, and clean each data set that you use. The primary  source data should be stored in (or downloaded to upon making) the `/data/raw/` folder. Code that cleans, structures, renames, etc this raw data should be stored in `/src/data/` and should have the goal of cleaning each data set and moving a cleaned version of this dataset into `/data/interim/`. 

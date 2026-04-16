@@ -53,20 +53,20 @@ orange <- '#D4760A'
 #loading the processed data
 d <- read.csv(here("data", "processed", "lyme_modeling_ready.csv"))
 
-# Excluding CT county (NA cases) and DC (no NOAA record).  See variable definitions for assumptions....
+# excluding CT county (NA cases) and DC (no NOAA record).  See variable definitions for assumptions....
 d <- d[complete.cases(d), ]
 
-# Excluding counties with zero 2018 cases even if they were categorized to high incidence historically
+# excluding counties with zero 2018 cases even if they were categorized to high incidence historically
 d <- d[d$incidence_2018 > 0, ]
 
-# Log-transform prevalence
+# log-transform prevalence
 d$log_incidence <- log(d$incidence_2018)
 ```
 ## Introduction
   Lyme disease transmission follows a predictable ecological cycle where deer ticks (Ixodes scapularis) get Borrelia burgdorferi from reservoir hosts like the white-footed mouse (Peromyscus leucopus) and transmit it to humans (Rogovskyy et. al, 2024).  Both I. scapularis and P. leucopus live in habitats that have fragmented forest (Anderson et. al, 2003).  County-level canopy cover may be a measurable predictor of transmission risk.  While forest fragmentation broadly predicts Lyme risk, dense canopy specifically has not been well characterized as a predictor.  Temperature has been studied but not relative to vector I. scapularis.  Lastly, equity-based predictors like health insurance coverage remain unexplored.  This study estimates the association between percent dense forest canopy and 2018 Lyme disease incidence across 602 U.S. counties that are identified as "high-incidence" endemic counties by the CDC.
 
 ## Data and Operationalization
-indent\ **Lyme incidence (outcome)**: 2018 county case counts (CDC surveillance dataset) were divided by Census 2018 population estimates and multiplied by 100,000 to produce cases per 100,000 residents.   Connecticut planning region FIPS codes (n = 9) and Washington D.C. (n = 1, no NOAA record) were dropped.  Counties with zero 2018 cases (n = 90) are excluded because log(0) is undefined, the analytic sample is n = 500.  **Canopy cover (primary predictor)**: EPA EnviroAtlas percent dense forest canopy (PFOR90, HUC-12 watersheds) was aggregated to county level via area-weighted mean using tigris and sf.  **Tick-questing season (covariate)**: Mean monthly NOAA temperature was used to count months per county exceeding 10°C the recognized metabolic minimum for active I. scapularis questing  (Fieler et. al, 2021).  Mean annual temperature was dropped due to r = 0.90 collinearity with this variable.  **Percent uninsured (covariate)**: SAHIE 2018 (U.S. Census Bureau, 2025) county-level estimates (all-age, all-income row).  Uninsured individuals are less likely to receive laboratory-confirmed diagnoses, so this variable partly adjusts for surveillance undercount.  **Reservoir host density (covariate)**: GBIF P. leucopus occurrences through 2018 were spatially binned to county area (km²) over all time to produce mouse_density_km2.  An audit revealed 97% of records are preserved museum specimens heavily concentrated in New York (median collection year 1957), making this variable unreliable as a contemporary predictor.  It is retained in Model 3 for transparency/honesty.
+indent\ **Lyme incidence (outcome)**: 2018 county case counts (CDC surveillance dataset) were divided by Census 2018 population estimates and multiplied by 100,000 to produce cases per 100,000 residents.   Connecticut planning region FIPS codes (n = 9) and Washington D.C. (n = 1, no NOAA record) were dropped.  Counties with zero 2018 cases (n = 90) are excluded because log(0) is undefined, the analytic sample is n = 500.  **Canopy cover (primary predictor)**: EPA EnviroAtlas percent dense forest canopy (PFOR90, HUC-12 watersheds) was aggregated to county level via area-weighted mean using tigris and sf.  **Tick-questing season (covariate)**: Mean monthly NOAA temperature was used to count months per county exceeding 10°C the recognized metabolic minimum for active I. scapularis questing  (Fieler et. al, 2021).  Mean annual temperature was dropped due to r = 0.90 collinearity with this variable.  **Percent uninsured (covariate)**: SAHIE 2018 (U.S. Census Bureau, 2025) county-level estimates (all-age, all-income row).  Uninsured individuals are less likely to receive laboratory-confirmed diagnoses, so this variable partly adjusts for surveillance undercount.  **Reservoir host density (covariate)**: GBIF P. leucopus occurrences through 2018 were spatially binned to county area (km²) over all time to produce mouse_density_km2.  An audit revealed 97% of records are preserved museum specimens heavily concentrated in New York (median collection year 1987), making this variable unreliable as a contemporary predictor.  It is retained in Model 3 for transparency/honesty.
 
 ## Exploratory Data Analysis
 ```{r}
@@ -92,7 +92,7 @@ p_log <- ggplot(d, aes(x = log_incidence)) +
 
 p_raw | p_log
 ```
-  Raw Lyme incidence is strongly right-skewed (skewness ≈ 2.5), driven by high prevalence northeastern counties. A natural log transformation produces an approximately symmetric distribution and substantially improves linearity with canopy cover (the models use log(incidence_2018) as the outcome.)
+  Raw Lyme incidence is strongly right-skewed (skewness ≈ 2.5), driven by high prevalence northeastern counties.  A natural log transformation produces an approximately symmetric distribution and substantially improves linearity with canopy cover (the models use log(incidence_2018) as the outcome.)
 
 ```{r}
 #| label: bivariate-plot
@@ -124,10 +124,10 @@ ggplot(d, aes(x = canopy_pct, y = log_incidence)) +
        title = "Forest canopy cover and Lyme disease incidence") +
   theme(plot.title = element_text(size = 10))
 ```
-  A positive association is evident between forest canopy cover and log Lyme incidence across the full range (5%–80%).  The scatter is substantial, consistent with canopy cover capturing one dimension of transmission risk but not the full ecological or social picture. Two high-canopy data points at log incidence ≈ −2 correspond to low populated mountain counties.
+  A positive association is evident between forest canopy cover and log Lyme incidence across the full range (5%–80%).  The scatter is substantial, consistent with canopy cover capturing one dimension of transmission risk but not the full ecological or social picture. Two high-canopy data points at log incidence ≈ −2 correspond to low case count mountain counties.
 
 ## Regression Models
-  Three nested OLS models with HC3 heteroskedasticity-robust standard errors. Model 1 isolates the marginal canopy–incidence association. Model 2 adds active_months_10c and pct_uninsured. Model 3 adds mouse_density_km2 and the biologically motivated interaction canopy_pct:mouse_density_km2, testing whether high reservoir host density amplifies the canopy effect.
+  Three nested OLS models with HC3 heteroskedasticity-robust standard errors. Model 1 isolates the marginal canopy–incidence association. Model 2 adds active_months_10c and pct_uninsured. Model 3 adds mouse_density_km2 and the biologically motivated interaction canopy_pct: mouse_density_km2, testing whether high reservoir host density amplifies the canopy effect.
 
 ```{r}
 #| label: fit-models 
@@ -140,18 +140,41 @@ m2 <- lm(log_incidence ~ canopy_pct + active_months_10c + pct_uninsured,
 m3 <- lm(log_incidence ~ canopy_pct + active_months_10c + pct_uninsured +
            mouse_density_km2 + canopy_pct:mouse_density_km2,
          data = d)
+
 ```
 
 ```{r}
-#| label: model-diagnostics
+#| label: quadratic-canopy-test
 #| include: false
 
-#VIF for Model 2 predictors
-vif(m2)
+# Testing whether the canopy-incidence relationship is nonlinear.  I tested for this and then accidentally deleted/versioned it out, but then I referenced it again in my slides/conclusion so here it is again...
+m_quad <- lm(log_incidence ~ canopy_pct + I(canopy_pct^2), data = d)
 
-# Wald F-tests
-waldtest(m1, m2, vcov = vcovHC(m2))   
-waldtest(m2, m3, vcov = vcovHC(m3))  
+quad_coef  <- summary(m_quad)$coefficients
+quad_p     <- round(quad_coef["I(canopy_pct^2)", "Pr(>|t|)"], 3)
+```
+
+```{r}
+#| label: wald-table
+#| echo: false
+
+library(lmtest)
+
+w1 <- waldtest(m1, m2, vcov = vcovHC(m2))
+w2 <- waldtest(m2, m3, vcov = vcovHC(m3))
+
+wald_df <- data.frame(
+  Comparison = c("Model 1 vs Model 2", "Model 2 vs Model 3"),
+  `Added Variables` = c("Active months, % uninsured", 
+                         "Mouse density, Canopy x Mouse"),
+  df = c(w1$Df[2], w2$Df[2]),
+  F  = c(round(w1$F[2], 3), round(w2$F[2], 3)),
+  p  = c(round(w1$`Pr(>F)`[2], 4), round(w2$`Pr(>F)`[2], 4))
+)
+
+knitr::kable(wald_df, 
+             caption = "Wald F-tests for nested model comparisons (HC3 robust)",
+             col.names = c("Comparison", "Added Variables", "df", "F", "p-value"))
 ```
 
 
@@ -160,6 +183,18 @@ waldtest(m2, m3, vcov = vcovHC(m3))
 se_m1 <- sqrt(diag(vcovHC(m1)))
 se_m2 <- sqrt(diag(vcovHC(m2)))
 se_m3 <- sqrt(diag(vcovHC(m3)))
+```
+
+```{r}
+#| label: normality-stats
+#| include: false
+library(moments)
+
+n_obs    <- nrow(d)
+skew_val <- round(skewness(resid(m2)), 2)
+kurt_ex  <- round(kurtosis(resid(m2)) - 3, 2)
+skew_ci  <- round(skew_val + c(-1, 1) * 1.96 * sqrt(6  / n_obs), 2)
+kurt_ci  <- round(kurt_ex  + c(-1, 1) * 1.96 * sqrt(24 / n_obs), 2)
 ```
 
 
@@ -195,12 +230,31 @@ stargazer(m1, m2, m3,
 
 **Statistical significance (Hlavac & Marek, 2022):** Canopy cover is positive and significant (p \< 0.001) across all three models, rejecting the null of no relationship. In Model 1, each 10-percentage-point increase in canopy is associated with approximately an 11.8% increase in incidence (exp(0.011 \* 10) − 1). A county moving from the 25th percentile of canopy (26.7%) to the 75th (60.6%) is predicted to have 46% higher incidence. Adding climate and surveillance covariates in Model 2 raises the canopy coefficient to 0.017, corresponding to an 18.4% increase per 10% the crude Model 1. Active questing months carry a significant negative coefficient (−0.49, p \< 0.001), endemic counties at cooler latitudes have higher prevalence regardless of tick metabolism.  A Wald F-test confirms that active_months_10c and pct_uninsured jointly improve fit over the canopy-only model (F(2, 496) = 31.40, p < 0.001).  Percent uninsured is negative but not statistically significant. The Model 3 interaction is small and non-significant (p = 0.45), consistent with the museum-specimen bias in GBIF records precluding detection of any host-density amplification effect.
 
+```{r}
+#| label: clm-diagnostics
+#| include: false
+
+bp       <- bptest(m2)
+bp_stat  <- round(bp$statistic, 3)
+bp_p     <- round(bp$p.value, 4)
+
+vif_vals <- round(vif(m2), 2)
+```
+
+
 ## CLM Assumption Evaluation
-  At n = 500, we rely on the large-sample OLS framework, which requires IID sampling, no perfect collinearity, and a finite fourth moment.  **IID**: Adjacent counties share tick habitat, climate zones, and healthcare infrastructure, introducing positive spatial autocorrelation in residuals.  Standard errors may be mildly underestimated even after HC3 correction, this is a limitation. Counties are also also not completely identical. **No perfect collinearity**: VIFs for Model 2 are 1.13 (canopy), 1.26 (active months), and 1.32 (percent uninsured) which are below 10. **Linear conditional mean**: The residuals-vs-fitted plot (fig 3) shows a slight deviation so the model slightly overpredicts incidence for the lowest-incidence endemic counties.  A quadratic canopy term was non-significant (p = 0.34), suggesting this curvature reflects omitted county-level heterogeneity rather than a nonlinear functional form. Several extreme negative residuals (≤ −5) correspond to low-count, high-canopy counties. **Homoskedasticity**: Residual spread increases modestly at higher fitted values (Figure 3); HC3 robust standard errors address this throughout. Normal errors: Not required for large-sample inference.
+
+At n = 500 we rely on large-sample OLS, which requires IID 
+sampling, no perfect collinearity, and a finite fourth moment.  **Linearity:** The residuals-vs-fitted plot (Figure 3) shows a mild S-shaped deviation.  When a quadratic canopy term was non-significant (p = `r quad_p`), suggesting the curvature could reflect omitted county heterogeneity rather than model misspecification or an omitted coefficient.  **Independence:** Counties are not independently sampled adjacent counties share tick habitat, climate zones, and healthcare infrastructure, producing positive spatial autocorrelation.  This is a known limitation.  HC3 SEs partially 
+mitigate but do not eliminate it.  **Homoscedasticity:** Breusch-Pagan test confirms 
+heteroscedasticity (BP = `r bp_stat`, p = `r bp_p`).  HC3 robust standard errors are used throughout.  **No perfect collinearity:** VIFs for Model 2 are 
+`r vif_vals[1]` (canopy), `r vif_vals[2]` (active months), and `r vif_vals[3]` (percent uninsured), which are all well below 5 meaning the covariates are not perfectly collinear.  **Normal errors:** Less needed in this case since n = 502 the CLT can be aplied. However a Q-Q plot was run (Appendix A5) and shows mild left skew 
+(skewness = `r skew_val`, 95% CI= [`r skew_ci[1]`, `r skew_ci[2]`]) driven by low case count high-canopy counties.  Therefore, the p-values and standard errors are normal and unaffected.
 
 ```{r}
 #| label: residual-plot
 #| include: false
+library(moments)
 
 p_resid <- data.frame(
   fitted    = fitted(m2),
@@ -218,32 +272,11 @@ p_resid <- data.frame(
 
 ggsave("resid_plot.pdf", p_resid, width = 3.0, height = 2.0)
 
-
 ```
 
-::: {=latex}
-\noindent
-\begin{minipage}[t]{0.52\textwidth}
-\vspace{0pt}
-\includegraphics[width=\linewidth]{resid_plot.pdf}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.44\textwidth}
-\vspace{0pt}
-\small \textit{Figure 3:} Residuals vs. fitted values for 
-Model 2. The loess smoother (orange) reveals a mild S-shaped 
-deviation from zero. Extreme negative residuals correspond to 
-low-count, high-canopy mountain counties. Spread increases 
-modestly at higher fitted values, motivating HC3 robust 
-standard errors.
-\end{minipage}
-:::
-::: {=latex}
-\addtocounter{figure}{1}
-:::
 
 ## Conclusion
-  Forest canopy cover is a statistically and practically significant predictor of Lyme disease incidence across endemic U.S. counties. A 10 percentage-point increase in dense canopy is associated with an estimated 18.4% increase in incidence after adjusting for tick-questing season length and insurance-based surveillance effort (Model 2). Surveillance bias, indexed by percent uninsured, is consistent with detection differences partially confound naive geographic comparisons. The canopy × mouse density interaction has no effect in Model 2, but largely consists of donated museum specimens. Future work coupling these predictors with spatial autocorrelation correction would substantially strengthen descriptive estimates.
+  Forest canopy cover is a statistically and practically significant predictor of Lyme disease incidence across endemic U.S. counties.  A 10 percentage-point increase in dense canopy cover is associated with an estimated 18.4% increase in log incidence after adjusting for tick-questing season length and percent uninsured (Model 2, R² = 0.148).  Active questing season length is negatively associated with incidence (β = −0.49).  The percent uninsured coefficient is negative but not statistically significant. In Model 3, mouse density and the canopy × mouse density interaction are not statistically significant.  For mouse density 97% of GBIF P. leucopus records were preserved museum specimens (median collection year was 1987), so this variable does not represent contemporary occurrence which could be related to the effect. Spatial autocorrelation across adjacent counties remains an unaddressed limitation.
 
 \newpage
 
@@ -290,6 +323,9 @@ USDA Unemployment Data. (2025, January 31). Unemployment2000-2023. County-level 
 |------------------------------------|------------------------------------|
 | `incidence ~ canopy_pct` (raw Y) | Strong right skew produced fan-shaped residuals; log transform clearly superior. |
 | `log(incidence) ~ canopy_pct` (Model 1) | Clean baseline; residuals approximately homoskedastic. Retained as simplest credible model. |
+| `log(incidence) ~ canopy_pct + I(canopy_pct^2) + ...` | 
+Quadratic term non-significant (p = `r quad_p`); 
+linear specification retained. |
 | `log(incidence) ~ canopy_pct + mean_annual_temp_c` | VIF \> 8 with active months; dropped mean_annual_temp_c to resolve collinearity. |
 | `log(incidence) ~ canopy_pct + active_months_10c + pct_uninsured` (Model 2) | Canopy coefficient stable; season length and surveillance both significant. Best descriptive model. |
 | `log(incidence) ~ ... + mouse_density_km2 + canopy_pct:mouse_density_km2` (Model 3) | Interaction non-significant; likely a GBIF sampling artifact. Retained for transparency. |
@@ -302,7 +338,7 @@ in the analytic sample (n = 500 endemic counties, 2018). Dashed orange
 lines mark the median.
 ```{r}
 #| label: appendix-predictor-distributions
-#| fig-cap: "Distributions of the four predictors included across models. All are unimodal. Canopy cover and active months are roughly symmetric; percent uninsured is mildly right-skewed; mouse density is strongly right-skewed and log-scaled for legibility (note: log scale is display only — the untransformed variable enters the model)."
+#| fig-cap: "Distributions of the four predictors included across models. All are unimodal. Canopy cover and active months are roughly symmetric; percent uninsured is mildly right-skewed; mouse density is strongly right-skewed and log-scaled for legibility."
 #| fig-height: 4.5
 #| fig-width: 6.5
 
@@ -359,8 +395,22 @@ cor_mat  <- round(cor(cor_vars, use = "complete.obs"), 3)
 colnames(cor_mat) <- rownames(cor_mat) <-
   c("Canopy (%)", "Active months", "Pct. uninsured")
 
-# Show lower triangle only to reduce redundancy
+# showing lower triangle only to reduce redundancy
 cor_mat[upper.tri(cor_mat)] <- NA
-
+#this is not working but that is okay
 knitr::kable(cor_mat, na = "—")
+```
+
+```{r}
+#| label: appendix-qq
+#| fig-cap: "Q-Q plot of Model 2 residuals. The points deviate at the 
+#|   lower tail, consistent with mild left skew from low case count, 
+#|   high-canopy counties. Inference is unaffected at n = 500."
+#| fig-height: 2.5
+
+ggplot(data.frame(resids = resid(m2)), aes(sample = resids)) +
+  stat_qq(color = blue, alpha = 0.5, size = 0.8) +
+  stat_qq_line(color = orange, linewidth = 0.9) +
+  labs(x = "Theoretical quantiles", y = "Sample quantiles",
+       title = "Normal Q-Q: Model 2 residuals")
 ```
